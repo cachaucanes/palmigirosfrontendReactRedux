@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
+/* import logo from './logo.svg'; */
 import './App.css';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Navbar from './pages/Navbar';
+import DepartmentsList from './components/departments/DepartmentsList';
+import DepartmentCreate from './components/departments/DepartmentCreate'
+import City from './components/cities/City';
+import CityForm from './components/cities/CityForm';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <BrowserRouter>
+      <Navbar/>
+      <Switch>
+          
+        <Route path='/' exact component={Home} />
+        <Route path='/department-list' exact component={DepartmentsList} /> {/* Se recomienda render para componentes funcionales pero, crea un conflicto con el hook useSelector de redux */}
+        <Route path='/department-create' component={DepartmentCreate} />
+        <Route path='/department-edit/:id' component={DepartmentCreate} />
+        <Route path='/cities-list' component={City} />
+        <Route path='/cities-form' exact component={CityForm} />
+        <Route path='/cities-form/:id' component={CityForm} />
+        
+        <Route component={NotFound}/> {/* Se declaro al ultimo */}
+      </Switch>
+
+    </BrowserRouter>
+    
   );
 }
 

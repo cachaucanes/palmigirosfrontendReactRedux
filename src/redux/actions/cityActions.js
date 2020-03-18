@@ -1,11 +1,11 @@
 import Axios from "axios"
-
 export const FETCH_CITIES_REQUEST = 'FETCH_CITIES_REQUEST'
 export const FETCH_CITIES_SUCCESS = 'FETCH_CITIES_SUCCESS'
 export const FETCH_CITY_SUCCESS = 'FETCH_CITY_SUCCESS'
 export const FETCH_CITIES_ERROR = 'FETCH_CITIES_ERROR'
 export const DELETE_CITIES_SUCCESS = 'DELETE_CITIES_SUCCESS'
 export const POST_CITIES_SUCCESS = 'POST_CITIES_SUCCESS'
+export const PUT_CITY_SUCCESS = 'PUT_CITY_SUCCESS'
 
 const API = 'http://localhost:4000/api/ciudades'
 
@@ -19,7 +19,6 @@ export const getCities = () => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
     const cities = await Axios.get(API)
-    console.log("Result await ", cities);
     dispatch({
       type: FETCH_CITIES_SUCCESS,
       payload: {
@@ -76,16 +75,10 @@ export const deleteCity = (id) => async (dispatch) => {
   }
 }
 
-
 export const postCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    console.log(city);
-
     const res = await Axios.post(API, city)
-    console.log("Res await", res);
-
-
     dispatch({
       type: POST_CITIES_SUCCESS,
       payload: {
@@ -100,5 +93,24 @@ export const postCity = (city) => async (dispatch) => {
       }
     })
   }
+}
 
+export const putCity = (city) => async (dispatch) => {
+  dispatch(fetchCitiesRequest())
+  try {
+    const updateCity = await Axios.put(`${API}/${city.id}`, city)
+    dispatch({
+      type: PUT_CITY_SUCCESS,
+      payload: {
+        city: updateCity.data.data
+      }
+    })
+  } catch (error) {
+    dispatch({
+      type: FETCH_CITIES_ERROR,
+      payload: {
+        error
+      }
+    })
+  }
 }

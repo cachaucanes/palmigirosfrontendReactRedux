@@ -1,11 +1,12 @@
-import { FETCH_CITIES_REQUEST, FETCH_CITIES_SUCCESS, FETCH_CITIES_ERROR, DELETE_CITIES_SUCCESS, POST_CITIES_SUCCESS, FETCH_CITY_SUCCESS } from "../actions/cityActions";
+import { FETCH_CITIES_REQUEST, FETCH_CITIES_SUCCESS, FETCH_CITIES_ERROR, DELETE_CITIES_SUCCESS, POST_CITIES_SUCCESS, FETCH_CITY_SUCCESS, PUT_CITY_SUCCESS } from "../actions/cityActions";
 
 const initial_state = {
   cities: [],
   isFetching: false,
   error: '',
   message: '',
-  city: {}
+  city: {},
+
 }
 
 const fetchCities = (state = initial_state, action) => {
@@ -13,15 +14,15 @@ const fetchCities = (state = initial_state, action) => {
     case FETCH_CITIES_REQUEST:
       return {
         ...state,
-        isFetching: true,        
+        isFetching: true,
       }
     case FETCH_CITIES_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        cities: action.payload.cities
+        cities: action.payload.cities,
+        city: {},
       }
-
     case FETCH_CITIES_ERROR:
       return {
         ...state,
@@ -33,17 +34,15 @@ const fetchCities = (state = initial_state, action) => {
         ...state,
         cities: state.cities.filter(city => (city.id !== action.payload.id)),
         isFetching: false
-
       }
-
-    case POST_CITIES_SUCCESS : 
+    case POST_CITIES_SUCCESS:
       return {
         ...state,
         cities: [
           ...state.cities,
           action.payload.city
         ],
-        isFetching: false
+        isFetching: false,
       }
     case FETCH_CITY_SUCCESS:
       return {
@@ -51,7 +50,18 @@ const fetchCities = (state = initial_state, action) => {
         city: action.payload.city,
         isFetching: false
       }
-
+    case PUT_CITY_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        cities: state.cities.map(city => {
+          if (city.id === action.payload.city.id) {
+            city = action.payload.city
+            return city
+          }
+          return city
+        })
+      }
     default:
       return {
         ...state

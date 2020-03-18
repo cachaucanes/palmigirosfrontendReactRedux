@@ -1,43 +1,21 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchDepartment, deleteDepartment } from '../../redux/actions/departmentAction'
-import { ClipLoader } from 'react-spinners'
 import Alert from '@material-ui/lab/Alert';
 import { Grid, IconButton, ListItemSecondaryAction, ListItemText, ListItemAvatar, Avatar, ListItem, makeStyles, List } from '@material-ui/core'
 import PlaceIcon from '@material-ui/icons/Place';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
-
-export const Chargin = ({chargin}) => {
-  return (
-    <ClipLoader
-        size={50}
-        //size={"150px"} this also works
-        color={"#123abc"}
-        loading={chargin}
-      />
-  )
-}
+import Chargin from '../../pages/Chargin';
 
 const DepartmentsList = (props) => {
 
-  
   const state = useSelector((state) => state)
-  const dispatch = useDispatch()  
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(!state.fetchDepartment.isFetching, "original", state.fetchDepartment.isFetching);
-    
-    if(!state.fetchDepartment.isFetching){
-      dispatch(fetchDepartment())
-    }    
-    
-
+    dispatch(fetchDepartment())
   }, [dispatch])
-
-  
-  
 
   const deleteDepart = (id) => {
     const confirm = window.confirm('Desea Eliminar el departamento seleccionado')
@@ -66,16 +44,14 @@ const DepartmentsList = (props) => {
   }));
 
   const classes = useStyles();
- 
+
   return (
     <div>
       <h1>
         Departments List
-        <Chargin chargin={state.fetchDepartment.isFetching}/>
+        <Chargin chargin={state.fetchDepartment.isFetching} />
       </h1>
-
-    { state.fetchDepartment.error && <Alert severity="error">{state.fetchDepartment.error}</Alert>}
-
+      {state.fetchDepartment.error && <Alert severity="error">{state.fetchDepartment.error}</Alert>}
       <div className={classes.root}>
         <Grid item xs={12} md={7}>
           <div className={classes.demo}>
@@ -91,7 +67,6 @@ const DepartmentsList = (props) => {
                     primary={depart.departamento}
                     secondary={depart.created_at}
                   />
-                  
                   <ListItemSecondaryAction >
                     <IconButton onClick={() => deleteDepart(depart.id)} edge="end" aria-label="delete">
                       <DeleteIcon />
@@ -99,17 +74,15 @@ const DepartmentsList = (props) => {
                     <IconButton onClick={() => editDepart(depart.id)}>
                       <EditIcon />
                     </IconButton>
-                  </ListItemSecondaryAction>                                    
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>
           </div>
         </Grid>
       </div>
-
     </div>
   )
 }
-
 
 export default DepartmentsList

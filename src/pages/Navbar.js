@@ -8,7 +8,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
 
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [city, setCity] = useState(false);
@@ -99,7 +98,6 @@ const Navbar = () => {
             </List>
           </Collapse>
         </List>
-
         <Button color="inherit" component={RouterLink} to='/'>Login</Button>
       </Toolbar>
     </AppBar>

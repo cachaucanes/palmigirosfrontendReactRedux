@@ -4,7 +4,6 @@ import {
   FETCH_DEPARTMENT_ERROR,
   DELETE_DEPARTMENT_SUCCESS,
   CREATE_DEPARTMENT_SUCCESS,
-  FETCH_EDIT_DEPARTMENT_REQUEST,
   FETCH_EDIT_DEPARTMENT_SUCCESS,
   PUT_EDIT_DEPARTMENT
 } from "../actions/departmentAction"
@@ -13,12 +12,10 @@ const initial_state = {
   departments: [],
   isFetching: false,
   error: '',
-  edit: false,
   departEdit: {}
 }
 
 const fetchDepartment = (state = initial_state, action) => {
-
   switch (action.type) {
     case FETCH_DEPARTMENT_REQUEST:
       return {
@@ -26,15 +23,14 @@ const fetchDepartment = (state = initial_state, action) => {
         isFetching: true,
         edit: true,
       }
-
     case FETCH_DEPARTMENT_SUCCESS:
       return {
         ...state,
         isFetching: false,
         departments: action.payload.departments,
         edit: false,
+        departEdit: {}
       }
-
     case FETCH_DEPARTMENT_ERROR:
       return {
         ...state,
@@ -58,13 +54,6 @@ const fetchDepartment = (state = initial_state, action) => {
           action.payload
         ]
       }
-
-    case FETCH_EDIT_DEPARTMENT_REQUEST: {
-      return {
-        ...state
-      }
-    }
-
     case FETCH_EDIT_DEPARTMENT_SUCCESS: {
       return {
         ...state,
@@ -73,7 +62,6 @@ const fetchDepartment = (state = initial_state, action) => {
         departEdit: action.payload
       }
     }
-
     case PUT_EDIT_DEPARTMENT: {
       return {
         ...state,
@@ -86,10 +74,8 @@ const fetchDepartment = (state = initial_state, action) => {
           }
           return depart
         })
-
       }
     }
-
     default:
       return {
         ...state

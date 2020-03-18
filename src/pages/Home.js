@@ -1,10 +1,14 @@
 import React from 'react'
+import giro from '../img/giro.png'
 import '../App.css'
 
 const Home = () => {
   return (
     <div>
-      <h1 className='Title-Home'>Home PalmiGiros!!!</h1>
+      <h1 className='Title-Home'>Welcome PalmiGiros!!!</h1>
+      <div className='ImgGiro'>
+      <img src={giro} alt="logo"/>
+      </div>
     </div>
   )
 }

@@ -3,8 +3,8 @@ import { makeStyles, FormControl, InputLabel, Select, MenuItem, TextField, Grid,
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchDepartment } from '../../redux/actions/departmentAction';
 import SendIcon from '@material-ui/icons/Send';
-import { postCity, getCity } from '../../redux/actions/cityActions';
-
+import { postCity, getCity, putCity } from '../../redux/actions/cityActions';
+import Chargin from '../../pages/Chargin';
 
 const CityForm = (props) => {
   const [idDepart, setIdDepart] = useState('');
@@ -12,21 +12,28 @@ const CityForm = (props) => {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  useEffect(() => {    
+  useEffect(() => {
     dispatch(fetchDepartment())
+  }, [dispatch])
+
+  useEffect(() => {
     if (props.match.params.id) {
       dispatch(getCity(props.match.params.id))
-      setCity(state.fetchCities.city.ciudad)
-      /* if(state.fetchCities.city) */
-      if (state.fetchCities.city.ciudad) {        
-        setIdDepart(state.fetchCities.city.idDepartamentos.id)
-      }
     }
     else {
       setCity('')
       setIdDepart('')
     }
-  }, [dispatch, props.match.params.id, state.fetchCities.city.ciudad])
+  }, [dispatch, props.match.params.id])
+
+  useEffect(() => {
+    if (props.match.params.id) {
+      setCity(state.fetchCities.city.ciudad)
+      if (state.fetchCities.city.ciudad) {
+        setIdDepart(state.fetchCities.city.idDepartamentos.id)
+      }
+    }
+  }, [state.fetchCities.city, props.match.params.id])
 
   const useStyles = makeStyles(theme => ({
     formControl: {
@@ -50,37 +57,37 @@ const CityForm = (props) => {
   const handleCity = (e) => {
     setCity(e.target.value)
   }
+
   const handle = () => {
-    if(props.match.params){
-      const newCity = Object.assign(state.fetchCities.city, {
-
+    if (props.match.params.id) {
+      const newCity = {
         idDepartamento: idDepart,
-        ciudad: city
-      })
-      console.log(newCity);
-    }else{
+        ciudad: city,
+        id: state.fetchCities.city.id
+      }
+      dispatch(putCity(newCity))
+    } else {
       const newCity = Object.assign({
-
         idDepartamento: idDepart,
         ciudad: city
       })
-      console.log(newCity);
+      dispatch(postCity(newCity))
+      if (state.fetchCities.redirect) {
+        props.history.push('/cities-list')
+      }
     }
-    
-    
-    /* dispatch(postCity(newCity)) */
   }
 
   return (
     <div style={{ marginTop: '15px' }}>
+      <Chargin chargin={state.fetchCities.isFetching} />
       <Grid container
         direction="column"
         justify="center"
         alignItems="center">
         <h1>{props.match.params.id ? 'Actualizar Ciudad' : 'Registrar Ciudad'}</h1>
         <Grid item xs={6} sm={2} lg={1}>
-
-          <form className={classes.root} noValidate>
+          <form onSubmit={handle} className={classes.root} noValidate>
             <FormControl variant="filled" className={classes.formControl}>
               <InputLabel id="demo-simple-select-filled-label">Departamentos</InputLabel>
               <Select
@@ -110,7 +117,6 @@ const CityForm = (props) => {
           </form>
         </Grid>
       </Grid>
-
     </div>
   )
 }

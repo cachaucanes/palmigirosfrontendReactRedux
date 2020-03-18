@@ -2,27 +2,30 @@ import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles, TextField, Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { createDepartment, editDepart, putEditDepart } from '../../redux/actions/departmentAction';
-import { Chargin } from './DepartmentsList';
+import Chargin from '../../pages/Chargin';
 
 const DepartmentCreate = (props) => {
 
   const dispatch = useDispatch()
   const state = useSelector((state) => state)
   const [name, setName] = useState('')
-  const [successEdit, setSuccessEdit] = useState(false)
   const nameRe = useRef()
 
   useEffect(() => {
     const { id } = props.match.params
-    if (id && !successEdit) {
+    if (id) {
       dispatch(editDepart(id))
-      setName(state.fetchDepartment.departEdit.departamento)
     } else {
       setName('')
       nameRe.current.focus()
     }
+  }, [props.match.params, dispatch])
 
-  }, [props.match.params, state.fetchDepartment.departEdit.departamento, dispatch, successEdit])
+  useEffect(() => {
+    if (props.match.params.id) {
+      setName(state.fetchDepartment.departEdit.departamento)
+    }
+  }, [state.fetchDepartment.departEdit.departamento, props.match.params.id])
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -51,11 +54,10 @@ const DepartmentCreate = (props) => {
       { departamento: name }
     )
     dispatch(putEditDepart(nuevo))
-    setSuccessEdit(true)
-    setName('')    
-    if (!state.fetchDepartment.departEdit.edit) {
+    setName('')
+    /* if (!state.fetchDepartment.departEdit.edit) {
       props.history.push('/department-list')
-    }    
+    } */
   }
 
   return (

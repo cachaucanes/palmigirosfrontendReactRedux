@@ -7,6 +7,7 @@ import { getCities, deleteCity } from '../../redux/actions/cityActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Chargin from '../../pages/Chargin';
+import AlertMessage from '../../pages/AlertMessage';
 
 const City = () => {
 
@@ -33,7 +34,11 @@ const City = () => {
 
   return (
     <List className={classes.root}>
+      <div style={{ textAlign: "center" }}>
+        <h1>List City</h1>
+      </div>
       <Chargin chargin={cities.isFetching} />
+      {cities.message && <AlertMessage typoAlerta={cities.status === 200 ? 'success' : 'error'} messageAlerta={cities.message} />}
       {
         cities.cities.map(city => (
           <ListItem button key={city.id}>

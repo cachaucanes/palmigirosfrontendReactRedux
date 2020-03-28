@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 /* import logo from './logo.svg'; */
 import './App.css';
 import Home from './pages/Home';
@@ -9,22 +9,31 @@ import DepartmentsList from './components/departments/DepartmentsList';
 import DepartmentCreate from './components/departments/DepartmentCreate'
 import City from './components/cities/City';
 import CityForm from './components/cities/CityForm';
+import Cliente from './components/clientes/Cliente';
+import ClientesList from './components/clientes/ClientesList';
+import ClientForm from './components/clientes/ClientForm';
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar/>
-      <Switch>          
+      <Navbar />
+      <Switch>
         <Route path='/' exact component={Home} />
+        <Route path='/cities-list' component={City} />
+        <Route path='/cities-form' exact component={CityForm} />
+        <Route path='/cities-form/:id' component={CityForm} />
+
+        <Route path='/client' component={Cliente} />
+        <Route path='/client-create' component={ClientForm} />
+        <Route path='/cliente-edit/:id' component={ClientForm} />
+        <Route path='/client-list' component={ClientesList} />
+
         <Route path='/department-list' exact component={DepartmentsList} /> {/* Se recomienda render para componentes funcionales pero, crea un conflicto con el hook useSelector de redux */}
         <Route path='/department-create' component={DepartmentCreate} />
         <Route path='/department-edit/:id' component={DepartmentCreate} />
-        <Route path='/cities-list' component={City} />
-        <Route path='/cities-form' exact component={CityForm} />
-        <Route path='/cities-form/:id' component={CityForm} />        
-        <Route component={NotFound}/> {/* Se declaro al ultimo */}
+        <Route component={NotFound} /> {/* Se declara al ultimo */}
       </Switch>
-    </BrowserRouter>    
+    </BrowserRouter>
   );
 }
 

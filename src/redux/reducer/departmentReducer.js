@@ -7,12 +7,15 @@ import {
   FETCH_EDIT_DEPARTMENT_SUCCESS,
   PUT_EDIT_DEPARTMENT
 } from "../actions/departmentAction"
+import { DELETE_MESSAGE } from "../actions/clearMessageActions"
 
 const initial_state = {
   departments: [],
-  isFetching: false,
-  error: '',
-  departEdit: {}
+  isFetching: false,  
+  departEdit: {},
+  redirect: false,
+  message: '',
+  status: ''
 }
 
 const fetchDepartment = (state = initial_state, action) => {
@@ -22,6 +25,7 @@ const fetchDepartment = (state = initial_state, action) => {
         ...state,
         isFetching: true,
         edit: true,
+        redirect: false
       }
     case FETCH_DEPARTMENT_SUCCESS:
       return {
@@ -29,13 +33,15 @@ const fetchDepartment = (state = initial_state, action) => {
         isFetching: false,
         departments: action.payload.departments,
         edit: false,
-        departEdit: {}
+        departEdit: {}        
       }
     case FETCH_DEPARTMENT_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload.error
+        status: action.payload.status,
+        message: action.payload.message
+        
       }
     case DELETE_DEPARTMENT_SUCCESS:
       return {
@@ -43,16 +49,21 @@ const fetchDepartment = (state = initial_state, action) => {
         isFetching: false,
         departments: state.departments.filter(depart => {
           return depart.id !== action.payload.id
-        })
+        }),
+        status: action.payload.status,
+        message: action.payload.message
       }
     case CREATE_DEPARTMENT_SUCCESS:
       return {
         ...state,
         isFetching: false,
+        redirect: true,
         departments: [
           ...state.departments,
-          action.payload
-        ]
+          action.payload.departamento
+        ],
+        message: action.payload.message,
+        status: action.payload.status
       }
     case FETCH_EDIT_DEPARTMENT_SUCCESS: {
       return {
@@ -73,7 +84,15 @@ const fetchDepartment = (state = initial_state, action) => {
             return depart
           }
           return depart
-        })
+        }),
+        status: action.payload.status,
+        message: action.payload.message
+      }
+    }
+    case DELETE_MESSAGE : {
+      return {
+        ...state,
+        message : ''
       }
     }
     default:

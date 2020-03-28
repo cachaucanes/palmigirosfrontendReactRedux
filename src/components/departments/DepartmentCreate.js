@@ -3,6 +3,7 @@ import { makeStyles, TextField, Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { createDepartment, editDepart, putEditDepart } from '../../redux/actions/departmentAction';
 import Chargin from '../../pages/Chargin';
+import AlertMessage from '../../pages/AlertMessage';
 
 const DepartmentCreate = (props) => {
 
@@ -44,24 +45,27 @@ const DepartmentCreate = (props) => {
   const handle = (e) => {
     e.preventDefault()
     if (!props.match.params.id) {
-      dispatch(createDepartment({ departamento: name }))
-      setName('')
-      return false
+      dispatch(createDepartment({ departamento: name }))      
+    } else {
+      const nuevo = Object.assign(
+        state.fetchDepartment.departEdit,
+        { departamento: name }
+      )
+      dispatch(putEditDepart(nuevo))      
     }
-
-    const nuevo = Object.assign(
-      state.fetchDepartment.departEdit,
-      { departamento: name }
-    )
-    dispatch(putEditDepart(nuevo))
-    setName('')
-    /* if (!state.fetchDepartment.departEdit.edit) {
-      props.history.push('/department-list')
-    } */
   }
+
+  useEffect(() => {
+    if (state.fetchDepartment.redirect === true) {
+      console.log(state.fetchDepartment.redirect);
+      props.history.push('/department-list')
+    }
+  }, [state.fetchDepartment.redirect, props.history])
 
   return (
     <div className={classes.root}>
+
+    {state.fetchDepartment.message &&  <AlertMessage  typoAlerta={state.fetchDepartment.status === 200 ? 'success' :'error'}  messageAlerta={state.fetchDepartment.message}/>}
       <div>
         <h1>{props.match.params.id ? 'Actualizar' : 'Registrar'} Departamentos</h1>
       </div>

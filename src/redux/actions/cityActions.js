@@ -1,4 +1,5 @@
 import Axios from "axios"
+import { clearMessage } from "./clearMessageActions"
 export const FETCH_CITIES_REQUEST = 'FETCH_CITIES_REQUEST'
 export const FETCH_CITIES_SUCCESS = 'FETCH_CITIES_SUCCESS'
 export const FETCH_CITY_SUCCESS = 'FETCH_CITY_SUCCESS'
@@ -58,33 +59,41 @@ export const getCity = (id) => async (dispatch) => {
 export const deleteCity = (id) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    await Axios.delete(`${API}/${id}`)
+    const city = await Axios.delete(`${API}/${id}`)
     dispatch({
       type: DELETE_CITIES_SUCCESS,
       payload: {
-        id
+        id,
+        message: city.data.message,
+        status: city.status
       }
     })
+    clearMessage(dispatch)
   } catch (error) {
     dispatch({
       type: FETCH_CITIES_ERROR,
-      payload: {
-        error
+      payload: {        
+        status: error.status,
+        message: error.message        
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const postCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const res = await Axios.post(API, city)
+    const res = await Axios.post(API, city)    
     dispatch({
       type: POST_CITIES_SUCCESS,
       payload: {
-        city: res.data.data
+        city: res.data.data,
+        message: res.data.message,
+        status: res.status
       }
     })
+    clearMessage(dispatch)
   } catch (error) {
     dispatch({
       type: FETCH_CITIES_ERROR,
@@ -98,13 +107,16 @@ export const postCity = (city) => async (dispatch) => {
 export const putCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const updateCity = await Axios.put(`${API}/${city.id}`, city)
+    const updateCity = await Axios.put(`${API}/${city.id}`, city)        
     dispatch({
       type: PUT_CITY_SUCCESS,
       payload: {
-        city: updateCity.data.data
+        city: updateCity.data.data,
+        message: updateCity.data.message,
+        status: updateCity.status
       }
     })
+    clearMessage(dispatch)
   } catch (error) {
     dispatch({
       type: FETCH_CITIES_ERROR,

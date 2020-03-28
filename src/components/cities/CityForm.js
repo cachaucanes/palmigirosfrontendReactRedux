@@ -5,6 +5,7 @@ import { fetchDepartment } from '../../redux/actions/departmentAction';
 import SendIcon from '@material-ui/icons/Send';
 import { postCity, getCity, putCity } from '../../redux/actions/cityActions';
 import Chargin from '../../pages/Chargin';
+import AlertMessage from '../../pages/AlertMessage';
 
 const CityForm = (props) => {
   const [idDepart, setIdDepart] = useState('');
@@ -58,7 +59,9 @@ const CityForm = (props) => {
     setCity(e.target.value)
   }
 
-  const handle = () => {
+  const handle = (e) => {
+    e.preventDefault()
+
     if (props.match.params.id) {
       const newCity = {
         idDepartamento: idDepart,
@@ -72,15 +75,13 @@ const CityForm = (props) => {
         ciudad: city
       })
       dispatch(postCity(newCity))
-      if (state.fetchCities.redirect) {
-        props.history.push('/cities-list')
-      }
     }
   }
 
   return (
     <div style={{ marginTop: '15px' }}>
       <Chargin chargin={state.fetchCities.isFetching} />
+      {state.fetchCities.message && <AlertMessage typoAlerta={state.fetchCities.status === 200 ? 'success' :'error'} messageAlerta={state.fetchCities.message} />}
       <Grid container
         direction="column"
         justify="center"

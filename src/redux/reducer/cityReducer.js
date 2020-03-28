@@ -1,4 +1,5 @@
 import { FETCH_CITIES_REQUEST, FETCH_CITIES_SUCCESS, FETCH_CITIES_ERROR, DELETE_CITIES_SUCCESS, POST_CITIES_SUCCESS, FETCH_CITY_SUCCESS, PUT_CITY_SUCCESS } from "../actions/cityActions";
+import { DELETE_MESSAGE } from "../actions/clearMessageActions";
 
 const initial_state = {
   cities: [],
@@ -6,6 +7,7 @@ const initial_state = {
   error: '',
   message: '',
   city: {},
+  status: ''
 
 }
 
@@ -21,19 +23,22 @@ const fetchCities = (state = initial_state, action) => {
         ...state,
         isFetching: false,
         cities: action.payload.cities,
-        city: {},
+        city: {}, /* Para que cuando vuelva a editar no se encuentre co el dato anterior */
       }
     case FETCH_CITIES_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload.error.toString()
+        message: action.payload.message,
+        status: action.payload.status
       }
     case DELETE_CITIES_SUCCESS:
       return {
         ...state,
         cities: state.cities.filter(city => (city.id !== action.payload.id)),
-        isFetching: false
+        isFetching: false,
+        message: action.payload.message,
+        status: action.payload.status
       }
     case POST_CITIES_SUCCESS:
       return {
@@ -43,6 +48,8 @@ const fetchCities = (state = initial_state, action) => {
           action.payload.city
         ],
         isFetching: false,
+        message: action.payload.message,
+        status: action.payload.status
       }
     case FETCH_CITY_SUCCESS:
       return {
@@ -60,8 +67,17 @@ const fetchCities = (state = initial_state, action) => {
             return city
           }
           return city
-        })
+        }),
+        status: action.payload.status,
+        message: action.payload.message
+
       }
+    case DELETE_MESSAGE: {
+      return {
+        ...state,
+        message: ''
+      }
+    }
     default:
       return {
         ...state

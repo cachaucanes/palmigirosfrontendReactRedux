@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchDepartment, deleteDepartment } from '../../redux/actions/departmentAction'
-import Alert from '@material-ui/lab/Alert';
 import { Grid, IconButton, ListItemSecondaryAction, ListItemText, ListItemAvatar, Avatar, ListItem, makeStyles, List } from '@material-ui/core'
 import PlaceIcon from '@material-ui/icons/Place';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Chargin from '../../pages/Chargin';
+import AlertMessage from '../../pages/AlertMessage';
 
 const DepartmentsList = (props) => {
 
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  useEffect(() => {        
     dispatch(fetchDepartment())
   }, [dispatch])
 
@@ -51,7 +51,8 @@ const DepartmentsList = (props) => {
         Departments List
         <Chargin chargin={state.fetchDepartment.isFetching} />
       </h1>
-      {state.fetchDepartment.error && <Alert severity="error">{state.fetchDepartment.error}</Alert>}
+      
+      {state.fetchDepartment.message &&  <AlertMessage typoAlerta={state.fetchDepartment.status === 200 ? 'success' :'error'}  messageAlerta={state.fetchDepartment.message}/>}
       <div className={classes.root}>
         <Grid item xs={12} md={7}>
           <div className={classes.demo}>

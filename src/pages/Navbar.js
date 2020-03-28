@@ -11,6 +11,7 @@ import StarBorder from '@material-ui/icons/StarBorder';
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [city, setCity] = useState(false);
+  const [client, setClient] = useState(false);
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -34,12 +35,9 @@ const Navbar = () => {
      <RouterLink ref={ref} to="/countries-hol" {...props} />
    ));
   */
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  const handleCity = () => {
-    setCity(!city);
-  };
+  const handleClick = () => setOpen(!open)
+  const handleCity = () => setCity(!city);  
+  const handleClient = () => setClient(!client)
 
   return (
     <AppBar position="static">
@@ -48,8 +46,10 @@ const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          PalmiGiros
-          </Typography>
+          <RouterLink style={{color:'white', textDecoration:'none'}} to='/'>
+            Palmigiros
+          </RouterLink>
+        </Typography>
         <List
           component="nav"
           aria-labelledby="nested-list-subheader">
@@ -95,6 +95,30 @@ const Navbar = () => {
                 </ListItemIcon>
                 <ListItemText primary="Cities list" />
               </ListItem>
+            </List>
+          </Collapse>
+        </List>
+        <List
+          component="nav"
+          aria-labelledby="nested-list-subheader">
+          <ListItem button onClick={handleClient}>
+            <ListItemText primary="Clientes" />
+            {client ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse style={{ position: "absolute", color: 'gray' }} in={client} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button onClick={handleClient} component={RouterLink} to='/client-create' >
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Clientes create" />
+              </ListItem>
+              <ListItem button onClick={handleClient} component={RouterLink} to='/client-list' >
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Clientes list" />
+              </ListItem>              
             </List>
           </Collapse>
         </List>

@@ -26,7 +26,7 @@ const ClientesList = (props) => {
       <div style={{textAlign: 'center'}}>
         <h1>List client</h1>
       </div>
-    { state.fetchClientes.message && <AlertMessage typoAlerta={state.fetchClientes.status === 200 ? 'success' : 'error'} messageAlerta={state.fetchClientes.message} /> }
+    { state.fetchClientes.message && <AlertMessage typoAlerta={state.fetchClientes.status} messageAlerta={state.fetchClientes.message} /> }
     
       <Chargin chargin={state.fetchClientes.isFetching}/>
       <div style={{ display: 'flex', justifyContent: 'space-between', flexFlow: 'row wrap' }}>

@@ -81,7 +81,7 @@ const CityForm = (props) => {
   return (
     <div style={{ marginTop: '15px' }}>
       <Chargin chargin={state.fetchCities.isFetching} />
-      {state.fetchCities.message && <AlertMessage typoAlerta={state.fetchCities.status === 200 ? 'success' :'error'} messageAlerta={state.fetchCities.message} />}
+      {state.fetchCities.message && <AlertMessage typoAlerta={state.fetchCities.status} messageAlerta={state.fetchCities.message} />}
       <Grid container
         direction="column"
         justify="center"

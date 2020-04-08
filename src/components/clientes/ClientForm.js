@@ -30,6 +30,7 @@ const ClientForm = (props) => {
       dispatch(getClient(props.match.params.id))
     }
   }, [dispatch, props.match.params.id])
+
   useEffect(() => {
     if (props.match.params.id) {
       const { nombres, apellidos, numeroDocumento, telefono, idCiudades } = state.fetchClientes.cliente
@@ -51,7 +52,6 @@ const ClientForm = (props) => {
     }
   }, [props.match.params.id, state.fetchClientes.cliente])
 
-
   const useStyles = makeStyles(theme => ({
     margin: {
       margin: theme.spacing(1),
@@ -70,7 +70,6 @@ const ClientForm = (props) => {
 
   const handleChangeCity = (e) => {
     setIdCity(e.target.value)
-
   }
   const handleChangeName = (e) => setNames(e.target.value)
   const handleChangeLastName = (e) => setLasName(e.target.value)
@@ -101,7 +100,7 @@ const ClientForm = (props) => {
         state.fetchClientes.message
         &&
         <AlertMessage
-          typoAlerta={state.fetchClientes.status === 200 ? 'success' : 'error'}
+          typoAlerta={state.fetchClientes.status}
           messageAlerta={state.fetchClientes.message} />
       }
       <Grid container
@@ -184,13 +183,12 @@ const ClientForm = (props) => {
               color="primary"
               className={classes.button}
               endIcon={<SendIcon></SendIcon>}>
-              {props.match.params.id ? 'Actualizar' : 'Guardar'} 
+              {props.match.params.id ? 'Actualizar' : 'Guardar'}
             </Button>
           </form>
         </Grid>
       </Grid>
     </div>
-
   )
 }
 

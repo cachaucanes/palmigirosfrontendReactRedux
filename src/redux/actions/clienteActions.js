@@ -1,5 +1,6 @@
 import Axios from "axios"
 import { clearMessage } from "./clearMessageActions"
+import { fetchClienteEmisor, FETCH_GIROS_ERROR } from "./giroActions"
 
 export const FETCH_CLIENT_REQUEST = 'FETCH_CLIENT_REQUEST'
 export const FETCH_CLIENTS_SUCCESS = 'FETCH_CLIENTS_SUCCESS'
@@ -42,20 +43,56 @@ export const getClient = (id) => async (dispatch) => {
     dispatch({
       type: FETCH_CLIENT_SUCCESS,
       payload: {
-        cliente: client.data
+        cliente: client.data.clientes,
+        status: client.status,
+        message: client.data.message
       }
     })
-
+    clearMessage(dispatch)
   } catch (error) {
     dispatch({
       type: FETCH_CLIENT_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
   }
+}
+
+export const getClientFindByCC = (numeroDocumento, giro, emisor) => async (dispatch) => {
+  try {
+    const client = await Axios.get(`/clientes/cc/${numeroDocumento}`)
+    if (giro) {
+      if (emisor) {
+        dispatch(fetchClienteEmisor(client, emisor))
+      } else {                
+        dispatch(fetchClienteEmisor(client, emisor))
+      }
+    } else {
+      dispatch(fetchClientRequest())
+      dispatch({
+        type: FETCH_CLIENT_SUCCESS,
+        payload: {
+          cliente: client.data.clientes,
+          status: client.status,
+          message: client.data.message
+        }
+      })
+      clearMessage(dispatch)
+    }
+  } catch (error) {
+    dispatch({
+      type: giro ? FETCH_GIROS_ERROR : FETCH_CLIENT_ERROR,
+      payload: {
+        status: error.status,
+        message: error.response.data.message
+      }
+    })
+    clearMessage(dispatch)
+  }
+
 }
 
 export const deleteClients = (id) => async (dispatch) => {
@@ -125,7 +162,7 @@ export const putClient = (client) => async (dispatch) => {
       }
     })
     clearMessage(dispatch)
-  } catch (error) {        
+  } catch (error) {
     dispatch({
       type: FETCH_CLIENT_ERROR,
       payload: {

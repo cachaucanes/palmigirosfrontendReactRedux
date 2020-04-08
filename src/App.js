@@ -12,6 +12,12 @@ import CityForm from './components/cities/CityForm';
 import Cliente from './components/clientes/Cliente';
 import ClientesList from './components/clientes/ClientesList';
 import ClientForm from './components/clientes/ClientForm';
+import GirosList from './components/giros/GirosList';
+import GiroForm from './components/giros/GiroForm';
+import PermisosList from './components/permisos/PermisosList';
+import PermisosForm from './components/permisos/PermisosForm';
+import PerfilList from './components/perfiles/PerfilList';
+import PerfilForm from './components/perfiles/PerfilForm';
 
 function App() {
   return (
@@ -31,6 +37,16 @@ function App() {
         <Route path='/department-list' exact component={DepartmentsList} /> {/* Se recomienda render para componentes funcionales pero, crea un conflicto con el hook useSelector de redux */}
         <Route path='/department-create' component={DepartmentCreate} />
         <Route path='/department-edit/:id' component={DepartmentCreate} />
+        <Route path='/giros-list' component={GirosList} />
+        <Route path='/giros-create' component={GiroForm} />
+        <Route path='/permisos-list' component={PermisosList} />
+        <Route path='/permisos-create' component={PermisosForm} />
+        <Route path='/permisos-edit/:id' component={PermisosForm} />
+
+        <Route path='/perfil-list' component={PerfilList} />
+        <Route path='/perfil-create' component={PerfilForm} />
+        <Route path='/perfil-edit/:id' component={PerfilForm} />
+
         <Route component={NotFound} /> {/* Se declara al ultimo */}
       </Switch>
     </BrowserRouter>

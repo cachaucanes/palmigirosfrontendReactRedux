@@ -52,7 +52,7 @@ const DepartmentsList = (props) => {
         <Chargin chargin={state.fetchDepartment.isFetching} />
       </h1>
       
-      {state.fetchDepartment.message &&  <AlertMessage typoAlerta={state.fetchDepartment.status === 200 ? 'success' :'error'}  messageAlerta={state.fetchDepartment.message}/>}
+      {state.fetchDepartment.message &&  <AlertMessage typoAlerta={state.fetchDepartment.status}  messageAlerta={state.fetchDepartment.message}/>}
       <div className={classes.root}>
         <Grid item xs={12} md={7}>
           <div className={classes.demo}>

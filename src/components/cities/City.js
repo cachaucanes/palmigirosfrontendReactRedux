@@ -33,12 +33,14 @@ const City = () => {
   }
 
   return (
-    <List className={classes.root}>
+    <div>
       <div style={{ textAlign: "center" }}>
         <h1>List City</h1>
       </div>
+      <List className={classes.root}>
+      
       <Chargin chargin={cities.isFetching} />
-      {cities.message && <AlertMessage typoAlerta={cities.status === 200 ? 'success' : 'error'} messageAlerta={cities.message} />}
+      {cities.message && <AlertMessage typoAlerta={cities.status} messageAlerta={cities.message} />}
       {
         cities.cities.map(city => (
           <ListItem button key={city.id}>
@@ -61,6 +63,8 @@ const City = () => {
       }
       <Divider variant="inset" component="li" />
     </List>
+    </div> 
+    
   )
 }
 

@@ -14,7 +14,8 @@ const fetchClientes = (state = initial_state, action) => {
     case FETCH_CLIENT_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        cliente: {}
       }
     case FETCH_CLIENTS_SUCCESS:
       return {
@@ -27,7 +28,9 @@ const fetchClientes = (state = initial_state, action) => {
       return {
         ...state,
         cliente: action.payload.cliente,
-        isFetching: false
+        isFetching: false,
+        status: action.payload.status,
+        message: action.payload.message
       }
     case FETCH_CLIENT_ERROR:
       return {
@@ -73,7 +76,8 @@ const fetchClientes = (state = initial_state, action) => {
     case DELETE_MESSAGE:
       return {
         ...state,
-        message: ''
+        message: '',
+        status: ''
       }
     default:
       return state

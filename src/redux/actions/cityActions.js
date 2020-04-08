@@ -8,8 +8,6 @@ export const DELETE_CITIES_SUCCESS = 'DELETE_CITIES_SUCCESS'
 export const POST_CITIES_SUCCESS = 'POST_CITIES_SUCCESS'
 export const PUT_CITY_SUCCESS = 'PUT_CITY_SUCCESS'
 
-const API = 'http://localhost:4000/api/ciudades'
-
 const fetchCitiesRequest = () => {
   return {
     type: FETCH_CITIES_REQUEST
@@ -19,7 +17,7 @@ const fetchCitiesRequest = () => {
 export const getCities = () => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const cities = await Axios.get(API)
+    const cities = await Axios.get('/ciudades')
     dispatch({
       type: FETCH_CITIES_SUCCESS,
       payload: {
@@ -39,7 +37,7 @@ export const getCities = () => async (dispatch) => {
 export const getCity = (id) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const city = await Axios.get(`${API}/${id}`)
+    const city = await Axios.get(`/ciudades/${id}`)
     dispatch({
       type: FETCH_CITY_SUCCESS,
       payload: {
@@ -59,7 +57,7 @@ export const getCity = (id) => async (dispatch) => {
 export const deleteCity = (id) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const city = await Axios.delete(`${API}/${id}`)
+    const city = await Axios.delete(`/ciudades/${id}`)
     dispatch({
       type: DELETE_CITIES_SUCCESS,
       payload: {
@@ -84,7 +82,7 @@ export const deleteCity = (id) => async (dispatch) => {
 export const postCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const res = await Axios.post(API, city)    
+    const res = await Axios.post('/ciudades', city)    
     dispatch({
       type: POST_CITIES_SUCCESS,
       payload: {
@@ -107,7 +105,7 @@ export const postCity = (city) => async (dispatch) => {
 export const putCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const updateCity = await Axios.put(`${API}/${city.id}`, city)        
+    const updateCity = await Axios.put(`/ciudades/${city.id}`, city)        
     dispatch({
       type: PUT_CITY_SUCCESS,
       payload: {

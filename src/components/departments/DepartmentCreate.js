@@ -65,7 +65,7 @@ const DepartmentCreate = (props) => {
   return (
     <div className={classes.root}>
 
-    {state.fetchDepartment.message &&  <AlertMessage  typoAlerta={state.fetchDepartment.status === 200 ? 'success' :'error'}  messageAlerta={state.fetchDepartment.message}/>}
+    {state.fetchDepartment.message &&  <AlertMessage  typoAlerta={state.fetchDepartment.status}  messageAlerta={state.fetchDepartment.message}/>}
       <div>
         <h1>{props.match.params.id ? 'Actualizar' : 'Registrar'} Departamentos</h1>
       </div>

@@ -75,7 +75,8 @@ const fetchCities = (state = initial_state, action) => {
     case DELETE_MESSAGE: {
       return {
         ...state,
-        message: ''
+        message: '',
+        status: ''
       }
     }
     default:

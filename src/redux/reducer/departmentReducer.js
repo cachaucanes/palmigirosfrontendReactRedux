@@ -11,7 +11,7 @@ import { DELETE_MESSAGE } from "../actions/clearMessageActions"
 
 const initial_state = {
   departments: [],
-  isFetching: false,  
+  isFetching: false,
   departEdit: {},
   redirect: false,
   message: '',
@@ -33,7 +33,7 @@ const fetchDepartment = (state = initial_state, action) => {
         isFetching: false,
         departments: action.payload.departments,
         edit: false,
-        departEdit: {}        
+        departEdit: {}
       }
     case FETCH_DEPARTMENT_ERROR:
       return {
@@ -41,7 +41,7 @@ const fetchDepartment = (state = initial_state, action) => {
         isFetching: false,
         status: action.payload.status,
         message: action.payload.message
-        
+
       }
     case DELETE_DEPARTMENT_SUCCESS:
       return {
@@ -89,10 +89,11 @@ const fetchDepartment = (state = initial_state, action) => {
         message: action.payload.message
       }
     }
-    case DELETE_MESSAGE : {
+    case DELETE_MESSAGE: {
       return {
         ...state,
-        message : ''
+        message: '',
+        status: ''
       }
     }
     default:

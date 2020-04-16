@@ -1,4 +1,4 @@
-import { FETCH_PERFILES_REQUEST, FETCH_PERFILES_SUCCESS, FETCH_PERFILES_ERROR, DELETE_PERFILES_SUCCESS, POST_PERFILES_SUCCESS, FETCH_PERFIL_SUCCESS, PUT_PERFILES_SUCCESS } from "../actions/PerfilActions"
+import { FETCH_PERFILES_REQUEST, FETCH_PERFILES_SUCCESS, FETCH_PERFILES_ERROR, DELETE_PERFILES_SUCCESS, POST_PERFILES_SUCCESS, FETCH_PERFIL_SUCCESS, PUT_PERFILES_SUCCESS, DELETE_PERMISOSFROMPERFIL_SUCCESS, POST_PERMISO_FROM_PERFIL_SUCCESS } from "../actions/PerfilActions"
 import { DELETE_MESSAGE } from "../actions/clearMessageActions"
 
 const initial_state = {
@@ -18,7 +18,7 @@ const fetchPerfiles = (state = initial_state, action) => {
       }
 
     case FETCH_PERFIL_SUCCESS:
-      return{
+      return {
         ...state,
         perfil: action.payload.perfil,
         status: action.payload.status,
@@ -51,7 +51,7 @@ const fetchPerfiles = (state = initial_state, action) => {
       }
 
     case POST_PERFILES_SUCCESS:
-      return{
+      return {
         ...state,
         perfiles: [
           ...state.perfiles,
@@ -63,10 +63,10 @@ const fetchPerfiles = (state = initial_state, action) => {
       }
 
     case PUT_PERFILES_SUCCESS:
-      return{
+      return {
         ...state,
         perfiles: state.perfiles.map(perfil => {
-          if(perfil.id === action.payload.perfil.id){
+          if (perfil.id === action.payload.perfil.id) {
             perfil = action.payload.perfil
             return perfil
           }
@@ -78,11 +78,42 @@ const fetchPerfiles = (state = initial_state, action) => {
         perfil: {}
       }
 
+    case DELETE_PERMISOSFROMPERFIL_SUCCESS:
+      return {
+        ...state,
+        perfiles: state.perfiles.map(perfil => {
+
+          if (perfil.id === action.payload.idPerfil) {
+            perfil.permisos = perfil.permisos.filter(permiso => (permiso.id !== action.payload.idPermiso))
+            return perfil
+          }
+          return perfil
+        }),
+        status: action.payload.status,
+        message: action.payload.message,
+        isFetching: false
+      }
+
     case DELETE_MESSAGE:
       return {
-        ...state,        
+        ...state,
         status: '',
         message: ''
+      }
+
+    case POST_PERMISO_FROM_PERFIL_SUCCESS:
+      return {
+        ...state,
+        perfiles: state.perfiles.map(per => {
+          if (per.id === action.payload.idPerfil) {
+            per.permisos.push(action.payload.permiso)
+            return per       
+          }
+          return per
+        }),
+        status: action.payload.status,
+        message: action.payload.message,
+        isFetching: false
       }
 
     default:

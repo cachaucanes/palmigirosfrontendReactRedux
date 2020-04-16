@@ -5,9 +5,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 
-const PerfilView = ({perfil, onDelete}) => {
-
-
+const PerfilView = ({perfil, onDelete, handleClickOpen}) => {
+  
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -27,7 +26,7 @@ const PerfilView = ({perfil, onDelete}) => {
     <div>
       <div className={classes.root}>
         <List>
-          <ListItem button>
+          <ListItem onClick={() => handleClickOpen(perfil)} title='Ver permisos' button>
             <ListItemAvatar>
               <Avatar>
                 <FiberManualRecordIcon />

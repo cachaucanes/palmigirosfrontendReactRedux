@@ -9,6 +9,9 @@ export const POST_PERFILES_SUCCESS = 'POST_PERFILES_SUCCESS'
 export const PUT_PERFILES_SUCCESS = 'PUT_PERFILES_SUCCESS'
 export const DELETE_PERFILES_SUCCESS = 'DELETE_PERFILES_SUCCESS'
 
+export const DELETE_PERMISOSFROMPERFIL_SUCCESS = 'DELETE_PERMISOSFROMPERFIL_SUCCESS'
+export const POST_PERMISO_FROM_PERFIL_SUCCESS = 'POST_PERMISO_FROM_PERFIL_SUCCESS' 
+
 const fetchPerfilesRequest = () => {
   return {
     type: FETCH_PERFILES_REQUEST
@@ -141,3 +144,93 @@ export const putProfile = (perfil) => async (dispatch) => {
     clearMessage(dispatch)
   }
 }
+
+/* Delete Permisos from perfil */
+export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch) => {  
+  try {
+    if (idPermiso) {
+      idPermiso.map(async permiso => {
+        dispatch(fetchPerfilesRequest())
+        /* return console.log("Permisos a eliminar del perfil", idPerfil, permiso.id, permiso.descripcion); */
+        const permisoPerfil = await Axios.delete(`/perfiles/delete/${idPerfil}/${permiso.id}`)                
+        dispatch({
+          type: DELETE_PERMISOSFROMPERFIL_SUCCESS,
+          payload: {
+            idPerfil,
+            idPermiso: permiso.id ,
+            status: permisoPerfil.status,
+            message: permisoPerfil.data.message
+          }
+        })
+       clearMessage(dispatch)        
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type: FETCH_PERFILES_ERROR,
+      payload: {
+        status: error.status,
+        message: error.message
+      }
+    })
+    clearMessage(dispatch)
+  }  
+}
+
+export const addPermisosPerfil = (idPerfil, permisos) => async (dispatch) => {
+    try {
+      dispatch(fetchPerfilesRequest())
+      if(permisos){
+        permisos.map(async permiso => {
+          const permisoadd = await Axios.post(`/perfiles/add/`, {idPerfil, idPermiso: permiso.id})
+          console.log(permisoadd);
+          
+          dispatch({
+            type: POST_PERMISO_FROM_PERFIL_SUCCESS,
+            payload: {
+              idPerfil,
+              permiso,
+              status: permisoadd.status,
+              message: permisoadd.data.message
+            }
+          })
+          clearMessage(dispatch)
+        })
+      }
+    } catch (error) {
+      dispatch({
+        type: FETCH_PERFILES_ERROR,
+        payload: {
+          status: error.status,
+          message: error.message
+        }
+      })
+      clearMessage(dispatch)
+    }
+}
+
+
+    /* try {
+      const permisoPerfil = await Axios.delete(`/perfiles/delete/${idPerfil}/${idPermiso}`)    
+      
+      dispatch({
+        type: DELETE_PERMISOSFROMPERFIL_SUCCESS,
+        payload: {
+          idPerfil,
+          idPermiso,
+          status: permisoPerfil.status,
+          message: permisoPerfil.data.message
+        }
+      })
+      clearMessage(dispatch)
+    } catch (error) {
+      dispatch({
+        type: FETCH_PERFILES_ERROR,
+        payload: {
+          status: error.status,
+          message: error.message
+        }
+      })
+      clearMessage(dispatch)
+    }
+   */

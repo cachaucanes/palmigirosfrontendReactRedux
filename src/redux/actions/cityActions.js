@@ -41,16 +41,23 @@ export const getCity = (id) => async (dispatch) => {
     dispatch({
       type: FETCH_CITY_SUCCESS,
       payload: {
-        city: city.data
+        city: city.data.city,
+        status: city.status,
+        message: city.data.message
       }
     })
+    clearMessage(dispatch)
   } catch (error) {
+    console.log(error);
+    
     dispatch({
       type: FETCH_CITIES_ERROR,
       payload: {
-        error
+        status: error.status,
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 

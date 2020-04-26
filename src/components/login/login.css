@@ -1,0 +1,50 @@
+.Container {  
+  height: 91vh;
+  width: 100%;
+  position: fixed;
+}
+
+.BackgroundLogin{
+  background: #E55D87;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #5FC3E4, #E55D87);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #5FC3E4, #E55D87); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.ButtonLogin {  
+  width: 70%;
+}
+
+.Container-login {
+  width: 20rem;
+  height: 30rem;
+  background: white;
+  border-radius: 2%;
+}
+.TitleLogin {
+  text-align: center;
+}
+.Link {
+  font-size: 12px;
+  color: #585858 !important
+}
+.IconTwiter {
+ background-color: #00acee !important
+}
+.IconInstagram {
+  background: #1a2a6c;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #fdbb2d, #b21f1f, #1a2a6c);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #fdbb2d, #b21f1f, #1a2a6c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.SocialIcons {
+  margin: 5px !important;
+}
+
+@media (max-width: 768px){
+  .Container {
+    height: 100vh;
+  }
+  .Container-login {        
+  height: 27rem;
+  width: 18rem;
+  }
+}

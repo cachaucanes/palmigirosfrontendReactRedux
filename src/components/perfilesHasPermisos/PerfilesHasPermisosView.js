@@ -24,35 +24,35 @@ const PerfilesHasPermisosView = (props) => {
   useEffect(() => {
     dispatch(fetchPermisos())
     if (perfil.permisos.length > 0) {
-      setPermisosPerfil(perfil.permisos)      
-    }    
+      setPermisosPerfil(perfil.permisos)
+    }
   }, [perfil, dispatch]) /* Todo el componente de perfil, porque no ubica cambios en componentes hijos */
 
 
   useEffect(() => {
-    if (permisos.permisos.length > 0) {      
+    if (permisos.permisos.length > 0) {
       const permisosdisponibles = permisos.permisos.filter(permiso => {
         /* Si retorna false, no lo agrega al nuevo array */
         let result = permisosPerfil.find(perfil => (perfil.id === permiso.id))
-        if (result) {          
+        if (result) {
           return false
-        } else {          
+        } else {
           return true
         }
       })
       setAllPermisos(permisosdisponibles)
-    }    
+    }
   }, [permisos.permisos, permisosPerfil])
 
   useEffect(() => {
-    if (perfil.permisos.length < 1) {      
+    if (perfil.permisos.length < 1) {
       setPermisosPerfil([])
-    }    
+    }
   }, [perfil])
 
   const handleClose = () => {
     onClose(selectedValue);
-    setChecked([])    
+    setChecked([])
   };
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,16 +102,16 @@ const PerfilesHasPermisosView = (props) => {
   };
 
   const numberOfChecked = (items) => intersection(checked, items).length;
-  const handleToggleAll = (items) => () => {    
-    if (numberOfChecked(items) === items.length) {      
+  const handleToggleAll = (items) => () => {
+    if (numberOfChecked(items) === items.length) {
       setChecked(not(checked, items));
     } else {
       setChecked(union(checked, items));
     }
   };
 
-  const handleCheckedRight = () => {       
-    setAllPermisos(AllPermisos.concat(leftChecked));        
+  const handleCheckedRight = () => {
+    setAllPermisos(AllPermisos.concat(leftChecked));
     setPermisosPerfil(not(permisosPerfil, leftChecked));
     setChecked(not(checked, leftChecked));
     dispatch(deletePermisoFromPerfil(perfil.id, leftChecked))
@@ -123,17 +123,17 @@ const PerfilesHasPermisosView = (props) => {
     setChecked(not(checked, rightChecked));
     dispatch(addPermisosPerfil(perfil.id, rightChecked))
     /* console.log(rightChecked, perfil.id); */
-    
+
   };
 
   const customList = (title, items, color, colorCheck) => (
     <Card>
-      <CardHeader 
-      style={{background:color}}   
+      <CardHeader
+        style={{ background: color }}
         className={classes.cardHeader}
         avatar={
           <Checkbox
-          color={colorCheck}          
+            color={colorCheck}
             onClick={handleToggleAll(items)}
             checked={numberOfChecked(items) === items.length && items.length !== 0}
             indeterminate={numberOfChecked(items) !== items.length && numberOfChecked(items) !== 0}
@@ -148,12 +148,11 @@ const PerfilesHasPermisosView = (props) => {
       <List className={classes.list} dense component="div" role="list">
         {items.map((value) => {
           const labelId = `transfer-list-all-item-${value.id}-label`;
-
           return (
             <ListItem key={value.id} role="listitem" button onClick={handleToggle(value)}>
               <ListItemIcon>
                 <Checkbox
-                color={colorCheck}
+                  color={colorCheck}
                   checked={checked.indexOf(value) !== -1}
                   tabIndex={-1}
                   disableRipple

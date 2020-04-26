@@ -5,7 +5,7 @@ import '../App.css'
 const Home = () => {
   return (
     <div>
-      <h1 className='Title-Home'>Welcome PalmiGiros!!!</h1>
+      <h1 className='Title-Home'>Welcome To PalmiGiros!!!</h1>
       <div className='ImgGiro'>
       <img src={giro} alt="logo"/>
       </div>

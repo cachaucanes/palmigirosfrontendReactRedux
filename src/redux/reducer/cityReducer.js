@@ -3,12 +3,10 @@ import { DELETE_MESSAGE } from "../actions/clearMessageActions";
 
 const initial_state = {
   cities: [],
-  isFetching: false,
-  error: '',
-  message: '',
   city: {},
-  status: ''
-
+  isFetching: false,
+  status: '',
+  message: ''
 }
 
 const fetchCities = (state = initial_state, action) => {
@@ -55,6 +53,8 @@ const fetchCities = (state = initial_state, action) => {
       return {
         ...state,
         city: action.payload.city,
+        status: action.payload.status,
+        message: action.payload.message,
         isFetching: false
       }
     case PUT_CITY_SUCCESS:

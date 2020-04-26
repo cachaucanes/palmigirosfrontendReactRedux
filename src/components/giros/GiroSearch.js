@@ -75,7 +75,7 @@ const GiroSearch = ({ searchGiroCc }) => {
           <InputBase
             onChange={giroFindByCcReceptor}
             type='number'
-            placeholder="Search…"
+            placeholder="Buscar por cc receptor"
             autoFocus
             value={ccReceptor}
             classes={{

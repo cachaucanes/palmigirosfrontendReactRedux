@@ -2,7 +2,7 @@ import {
   FETCH_USERS_SUCCESS,
   FETCH_USERS_REQUEST,
   FETCH_USERS_ERROR,
-  POST_USER_SUCCESS, DELETE_USER_SUCCESS, FETCH_USER_SUCCESS, PUT_USER_SUCCESS, LOGIN
+  POST_USER_SUCCESS, DELETE_USER_SUCCESS, FETCH_USER_SUCCESS, PUT_USER_SUCCESS, LOGIN, LOGOUT
 } from "../actions/userActions"
 import { DELETE_MESSAGE } from "../actions/clearMessageActions"
 
@@ -92,7 +92,16 @@ const fetchUser = (state = initial_state, action) => {
         ...state,
         status: action.payload.status,
         message: action.payload.message,
-        isFetching: false
+        isFetching: false,
+        redirect: true
+      }
+
+    case LOGOUT:
+      return {
+        ...state,
+        isFetching: false,
+        status: action.payload.status,
+        message: action.payload.message
       }
 
     case DELETE_MESSAGE:

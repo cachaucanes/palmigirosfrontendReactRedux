@@ -18,7 +18,7 @@ const fetchPermisosRequest = () => {
 export const fetchPermiso = (id) => async (dispatch) => {
   dispatch(fetchPermisosRequest())
   try {
-    const permiso = await Axios.get(`/permisos/${id}`)
+    const permiso = await Axios.get(`/api/permisos/${id}`)
     dispatch({
       type: FETCH_PERMISO_SUCCESS,
       payload: {
@@ -33,7 +33,7 @@ export const fetchPermiso = (id) => async (dispatch) => {
       type: FETCH_PERMISOS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -43,7 +43,7 @@ export const fetchPermiso = (id) => async (dispatch) => {
 export const fetchPermisos = () => async (dispatch) => {
   dispatch(fetchPermisosRequest())
   try {
-    const permisos = await Axios.get(`/permisos`)
+    const permisos = await Axios.get(`/api/permisos`)
     dispatch({
       type: FETCH_PERMISOS_SUCCESS,
       payload: {
@@ -58,7 +58,7 @@ export const fetchPermisos = () => async (dispatch) => {
       type: FETCH_PERMISOS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -68,7 +68,7 @@ export const fetchPermisos = () => async (dispatch) => {
 export const deletePermiso = (id) => async (dispatch) => {
   dispatch(fetchPermisosRequest())
   try {
-    const permiso = await Axios.delete(`/permisos/${id}`)
+    const permiso = await Axios.delete(`/api/permisos/${id}`)
     dispatch({
       type: DELETE_PERMISOS_SUCCESS,
       payload: {
@@ -83,7 +83,7 @@ export const deletePermiso = (id) => async (dispatch) => {
       type: FETCH_PERMISOS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -94,7 +94,7 @@ export const deletePermiso = (id) => async (dispatch) => {
 export const postPermisos = (permisos) => async (dispatch) => {
   dispatch(fetchPermisosRequest())
   try {
-    const permiso = await Axios.post(`/permisos`, permisos)
+    const permiso = await Axios.post(`/api/permisos`, permisos)
     dispatch({
       type: POST_PERMISOS_SUCCESS,
       payload: {
@@ -109,7 +109,7 @@ export const postPermisos = (permisos) => async (dispatch) => {
       type: FETCH_PERMISOS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -119,7 +119,7 @@ export const postPermisos = (permisos) => async (dispatch) => {
 export const putPermiso = (permiso) => async (dispatch) => {
   dispatch(fetchPermisosRequest())
   try {
-    const permisos = await Axios.put(`/permisos/${permiso.id}`, permiso)
+    const permisos = await Axios.put(`/api/permisos/${permiso.id}`, permiso)
     dispatch({
       type: PUT_PERMISOS_SUCCESS,
       payload: {
@@ -135,7 +135,7 @@ export const putPermiso = (permiso) => async (dispatch) => {
       type: FETCH_PERMISOS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)

@@ -6,6 +6,7 @@ import { fetchGiro } from './giroReducer'
 import fetchPermisos from './permisosReducer'
 import fetchPerfiles from './perfilReducer'
 import fetchUser from './userReducer'
+import fetchMantenerDatosUserSession from './authReducer'
 
 
 
@@ -16,8 +17,10 @@ const rootReducer = combineReducers({
   fetchGiro,
   fetchPermisos,
   fetchPerfiles,
-  fetchUser
+  fetchUser,
+  fetchMantenerDatosUserSession
 })
+
 
 
 

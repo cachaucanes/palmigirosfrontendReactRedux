@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 /* import logo from './logo.svg'; */
 import './App.css';
@@ -21,12 +21,23 @@ import PerfilForm from './components/perfiles/PerfilForm';
 import UserList from './components/users/UserList';
 import UserCreate from './components/users/UserCreate';
 import Login from './components/login/Login';
+import { useDispatch } from 'react-redux';
+import { mantenerDatosUser } from './redux/actions/authActions';
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(mantenerDatosUser())
+  }, [dispatch])
+
+  useEffect(() => {
+    console.log("Entras siempre");
+    
+  })  
   return (
     <BrowserRouter>
-      <Navbar />
-      <Switch>
+      <Route component={Navbar}/>
+      <Switch>      
         <Route path='/' exact component={Home} />
         <Route path='/cities-list' component={City} />
         <Route path='/cities-form' exact component={CityForm} />

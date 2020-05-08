@@ -13,7 +13,7 @@ const DepartmentsList = (props) => {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  useEffect(() => {        
+  useEffect(() => {
     dispatch(fetchDepartment())
   }, [dispatch])
 
@@ -32,7 +32,7 @@ const DepartmentsList = (props) => {
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
-      maxWidth: 752,
+      maxWidth: 400,
       margin: theme.spacing(1)
     },
     demo: {
@@ -47,14 +47,29 @@ const DepartmentsList = (props) => {
 
   return (
     <div>
-      <h1>
-        Departments List
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="flex-start"
+      >
+        <div>
+          <h1>
+            Departments List
         <Chargin chargin={state.fetchDepartment.isFetching} />
-      </h1>
-      
-      {state.fetchDepartment.message &&  <AlertMessage typoAlerta={state.fetchDepartment.status}  messageAlerta={state.fetchDepartment.message}/>}
-      <div className={classes.root}>
-        <Grid item xs={12} md={7}>
+          </h1>
+        </div>
+      </Grid>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="flex-start"
+      >
+
+        {state.fetchDepartment.message && <AlertMessage typoAlerta={state.fetchDepartment.status} messageAlerta={state.fetchDepartment.message} />}
+        <div className={classes.root}>
+
           <div className={classes.demo}>
             <List dense={true}>
               {state.fetchDepartment.departments.map(depart => (
@@ -80,8 +95,8 @@ const DepartmentsList = (props) => {
               ))}
             </List>
           </div>
-        </Grid>
-      </div>
+        </div>
+      </Grid>
     </div>
   )
 }

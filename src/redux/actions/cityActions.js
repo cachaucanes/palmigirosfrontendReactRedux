@@ -17,7 +17,7 @@ const fetchCitiesRequest = () => {
 export const getCities = () => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const cities = await Axios.get('/ciudades')
+    const cities = await Axios.get('/api/ciudades')
     dispatch({
       type: FETCH_CITIES_SUCCESS,
       payload: {
@@ -28,16 +28,17 @@ export const getCities = () => async (dispatch) => {
     dispatch({
       type: FETCH_CITIES_ERROR,
       payload: {
-        error
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const getCity = (id) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const city = await Axios.get(`/ciudades/${id}`)
+    const city = await Axios.get(`/api/ciudades/${id}`)
     dispatch({
       type: FETCH_CITY_SUCCESS,
       payload: {
@@ -47,9 +48,7 @@ export const getCity = (id) => async (dispatch) => {
       }
     })
     clearMessage(dispatch)
-  } catch (error) {
-    console.log(error);
-    
+  } catch (error) {    
     dispatch({
       type: FETCH_CITIES_ERROR,
       payload: {
@@ -64,7 +63,7 @@ export const getCity = (id) => async (dispatch) => {
 export const deleteCity = (id) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const city = await Axios.delete(`/ciudades/${id}`)
+    const city = await Axios.delete(`/api/ciudades/${id}`)
     dispatch({
       type: DELETE_CITIES_SUCCESS,
       payload: {
@@ -79,7 +78,7 @@ export const deleteCity = (id) => async (dispatch) => {
       type: FETCH_CITIES_ERROR,
       payload: {        
         status: error.status,
-        message: error.message        
+        message: error.response.data.message        
       }
     })
     clearMessage(dispatch)
@@ -89,7 +88,7 @@ export const deleteCity = (id) => async (dispatch) => {
 export const postCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const res = await Axios.post('/ciudades', city)    
+    const res = await Axios.post('/api/ciudades', city)    
     dispatch({
       type: POST_CITIES_SUCCESS,
       payload: {
@@ -103,16 +102,17 @@ export const postCity = (city) => async (dispatch) => {
     dispatch({
       type: FETCH_CITIES_ERROR,
       payload: {
-        error
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const putCity = (city) => async (dispatch) => {
   dispatch(fetchCitiesRequest())
   try {
-    const updateCity = await Axios.put(`/ciudades/${city.id}`, city)        
+    const updateCity = await Axios.put(`/api/ciudades/${city.id}`, city)        
     dispatch({
       type: PUT_CITY_SUCCESS,
       payload: {
@@ -126,8 +126,9 @@ export const putCity = (city) => async (dispatch) => {
     dispatch({
       type: FETCH_CITIES_ERROR,
       payload: {
-        error
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }

@@ -21,7 +21,7 @@ const fetchPerfilesRequest = () => {
 export const fetchPerfil = (id) => async (dispatch) => {
   dispatch(fetchPerfilesRequest())
   try {
-    const perfil = await Axios.get(`/perfiles/${id}`)
+    const perfil = await Axios.get(`/api/perfiles/${id}`)
     dispatch({
       type: FETCH_PERFIL_SUCCESS,
       payload: {
@@ -36,7 +36,7 @@ export const fetchPerfil = (id) => async (dispatch) => {
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -47,7 +47,7 @@ export const fetchPerfil = (id) => async (dispatch) => {
 export const fetchPerfiles = () => async (dispatch) => {
   dispatch(fetchPerfilesRequest())
   try {
-    const perfiles = await Axios.get(`/perfiles`)
+    const perfiles = await Axios.get(`/api/perfiles`)
     dispatch({
       type: FETCH_PERFILES_SUCCESS,
       payload: {
@@ -62,7 +62,7 @@ export const fetchPerfiles = () => async (dispatch) => {
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -73,7 +73,7 @@ export const fetchPerfiles = () => async (dispatch) => {
 export const deletePerfil = (id) => async (dispatch) => {
   dispatch(fetchPerfilesRequest())
   try {
-    const perfil = await Axios.delete(`/perfiles/${id}`)
+    const perfil = await Axios.delete(`/api/perfiles/${id}`)
     dispatch({
       type: DELETE_PERFILES_SUCCESS,
       payload: {
@@ -88,7 +88,7 @@ export const deletePerfil = (id) => async (dispatch) => {
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -98,7 +98,7 @@ export const deletePerfil = (id) => async (dispatch) => {
 export const postPerfiles = (perfilForm) => async (dispatch) => {
   dispatch(fetchPerfilesRequest())
   try {
-    const perfil = await Axios.post(`/perfiles`, perfilForm)
+    const perfil = await Axios.post(`/api/perfiles`, perfilForm)
     dispatch({
       type: POST_PERFILES_SUCCESS,
       payload: {
@@ -113,7 +113,7 @@ export const postPerfiles = (perfilForm) => async (dispatch) => {
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -123,7 +123,7 @@ export const postPerfiles = (perfilForm) => async (dispatch) => {
 export const putProfile = (perfil) => async (dispatch) => {
   dispatch(fetchPerfilesRequest())
   try {
-    const perfilUp = await Axios.put(`/perfiles/${perfil.id}`, perfil)
+    const perfilUp = await Axios.put(`/api/perfiles/${perfil.id}`, perfil)
     dispatch({
       type: PUT_PERFILES_SUCCESS,
       payload: {
@@ -138,7 +138,7 @@ export const putProfile = (perfil) => async (dispatch) => {
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -152,7 +152,7 @@ export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch)
       idPermiso.map(async permiso => {
         dispatch(fetchPerfilesRequest())
         /* return console.log("Permisos a eliminar del perfil", idPerfil, permiso.id, permiso.descripcion); */
-        const permisoPerfil = await Axios.delete(`/perfiles/delete/${idPerfil}/${permiso.id}`)                
+        const permisoPerfil = await Axios.delete(`/api/perfiles/delete/${idPerfil}/${permiso.id}`)                
         dispatch({
           type: DELETE_PERMISOSFROMPERFIL_SUCCESS,
           payload: {
@@ -170,7 +170,7 @@ export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch)
       type: FETCH_PERFILES_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -182,7 +182,7 @@ export const addPermisosPerfil = (idPerfil, permisos) => async (dispatch) => {
       dispatch(fetchPerfilesRequest())
       if(permisos){
         permisos.map(async permiso => {
-          const permisoadd = await Axios.post(`/perfiles/add/`, {idPerfil, idPermiso: permiso.id})
+          const permisoadd = await Axios.post(`/api/perfiles/add/`, {idPerfil, idPermiso: permiso.id})
           console.log(permisoadd);
           
           dispatch({
@@ -202,7 +202,7 @@ export const addPermisosPerfil = (idPerfil, permisos) => async (dispatch) => {
         type: FETCH_PERFILES_ERROR,
         payload: {
           status: error.status,
-          message: error.message
+          message: error.response.data.message
         }
       })
       clearMessage(dispatch)

@@ -17,27 +17,30 @@ const fetchDepartmentRequest = () => { /* ACTION CREATORS */
 export const fetchDepartment = () => async (dispatch) => {
   dispatch(fetchDepartmentRequest())
   try {
-    const departments = await axios.get('/departamentos')
+    const departments = await axios.get('/api/departamentos')    
     dispatch({
       type: FETCH_DEPARTMENT_SUCCESS,
       payload: {
         departments: departments.data
       }
     })
+    clearMessage(dispatch)
   } catch (error) {
     dispatch({
       type: FETCH_DEPARTMENT_ERROR,
       payload: {
-        error: error.toString()
+        status: error.status,
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const deleteDepartment = (id) => async (dispatch) => {
   dispatch(fetchDepartmentRequest())
   try {
-    const department = await axios.delete(`/departamentos/${id}`)
+    const department = await axios.delete(`/api/departamentos/${id}`)
     dispatch({
       type: DELETE_DEPARTMENT_SUCCESS,
       payload: {
@@ -52,7 +55,7 @@ export const deleteDepartment = (id) => async (dispatch) => {
       type: FETCH_DEPARTMENT_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -62,7 +65,7 @@ export const deleteDepartment = (id) => async (dispatch) => {
 export const createDepartment = (depart) => async (dispatch) => {
   dispatch(fetchDepartmentRequest())
   try {
-    const result = await axios.post('/departamentos', depart)
+    const result = await axios.post('/api/departamentos', depart)        
     dispatch({
       type: CREATE_DEPARTMENT_SUCCESS,
       payload: {
@@ -88,7 +91,7 @@ export const createDepartment = (depart) => async (dispatch) => {
 export const editDepart = (id) => async (dispatch) => {
   dispatch(fetchDepartmentRequest())
   try {
-    const result = await axios.get(`/departamentos/${id}`)
+    const result = await axios.get(`/api/departamentos/${id}`)
     dispatch({
       type: FETCH_EDIT_DEPARTMENT_SUCCESS,
       payload: result.data
@@ -97,16 +100,17 @@ export const editDepart = (id) => async (dispatch) => {
     dispatch({
       type: FETCH_DEPARTMENT_ERROR,
       payload: {
-        error: error
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const putEditDepart = (depart) => async (dispatch) => {
   dispatch(fetchDepartmentRequest())
   try {
-    const department = await axios.put(`/departamentos/${depart.id}`, depart)
+    const department = await axios.put(`/api/departamentos/${depart.id}`, depart)
     dispatch({
       type: PUT_EDIT_DEPARTMENT,
       payload: {
@@ -120,9 +124,10 @@ export const putEditDepart = (depart) => async (dispatch) => {
     dispatch({
       type: FETCH_DEPARTMENT_ERROR,
       payload: {
-        error
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 

@@ -19,7 +19,7 @@ const fetchClientRequest = () => {
 export const getClients = () => async (dispatch) => {
   dispatch(fetchClientRequest())
   try {
-    const clients = await Axios.get('/clientes')
+    const clients = await Axios.get('/api/clientes')
     dispatch({
       type: FETCH_CLIENTS_SUCCESS,
       payload: {
@@ -30,16 +30,17 @@ export const getClients = () => async (dispatch) => {
     dispatch({
       type: FETCH_CLIENT_ERROR,
       payload: {
-        message: error.message
+        message: error.response.data.message
       }
     })
+    clearMessage(dispatch)
   }
 }
 
 export const getClient = (id) => async (dispatch) => {
   dispatch(fetchClientRequest())
   try {
-    const client = await Axios.get(`/clientes/${id}`)
+    const client = await Axios.get(`/api/clientes/${id}`)
     dispatch({
       type: FETCH_CLIENT_SUCCESS,
       payload: {
@@ -63,7 +64,7 @@ export const getClient = (id) => async (dispatch) => {
 
 export const getClientFindByCC = (numeroDocumento, giro, emisor) => async (dispatch) => {
   try {
-    const client = await Axios.get(`/clientes/cc/${numeroDocumento}`)
+    const client = await Axios.get(`/api/clientes/cc/${numeroDocumento}`)
     if (giro) {
       if (emisor) {
         dispatch(fetchClienteEmisor(client, emisor))
@@ -98,7 +99,7 @@ export const getClientFindByCC = (numeroDocumento, giro, emisor) => async (dispa
 export const deleteClients = (id) => async (dispatch) => {
   dispatch(fetchClientRequest())
   try {
-    const client = await Axios.delete(`/clientes/${id}`)
+    const client = await Axios.delete(`/api/clientes/${id}`)
     dispatch({
       type: DELETE_CLIENT_SUCCESS,
       payload: {
@@ -113,7 +114,7 @@ export const deleteClients = (id) => async (dispatch) => {
       type: FETCH_CLIENT_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -123,7 +124,7 @@ export const deleteClients = (id) => async (dispatch) => {
 export const postClient = (cliente) => async (dispatch) => {
   dispatch(fetchClientRequest())
   try {
-    const clients = await Axios.post('/clientes', cliente)
+    const clients = await Axios.post('/api/clientes', cliente)
     console.log(clients.data.cliente);
 
     dispatch({
@@ -152,7 +153,7 @@ export const putClient = (client) => async (dispatch) => {
 
   dispatch(fetchClientRequest())
   try {
-    const clientupdate = await Axios.put(`/clientes/${client.id}`, client)
+    const clientupdate = await Axios.put(`/api/clientes/${client.id}`, client)
     dispatch({
       type: PUT_CLIENT_SUCCESS,
       payload: {

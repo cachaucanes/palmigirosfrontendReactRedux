@@ -39,8 +39,6 @@ export const fetchClienteEmisor = (cliente, emisor) => (dispatch) => {
       }
     })
   } else {
-    console.log("Else de cliente receptor", cliente);
-
     dispatch({
       type: FETCH_CLIENTE_RECEPTOR_SUCCESS,
       payload: {
@@ -56,7 +54,7 @@ export const fetchClienteEmisor = (cliente, emisor) => (dispatch) => {
 export const fetchByCcEmisor = (cc) => async (dispatch) => {
   dispatch(fetchGirosRequest())
   try {
-    const giro = await Axios.get(`/giros/cedula/${cc}`)
+    const giro = await Axios.get(`/api/giros/cedula/${cc}`)
     dispatch({
       type: FETCH_GIROS_SUCCESS,
       payload: {
@@ -81,7 +79,7 @@ export const fetchByCcEmisor = (cc) => async (dispatch) => {
 export const fetchGiros = () => async (dispatch) => {
   dispatch(fetchGirosRequest())
   try {
-    const giros = await Axios.get('/giros')
+    const giros = await Axios.get('/api/giros')
     dispatch({
       type: FETCH_GIROS_SUCCESS,
       payload: {
@@ -93,9 +91,12 @@ export const fetchGiros = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FETCH_GIROS_ERROR,
-      status: error.status,
-      message: error.message
+      payload: {
+        status: error.status,
+        message: error.response.data.message
+      }
     })
+    clearMessage(dispatch)
   }
 }
 
@@ -104,7 +105,7 @@ export const fetchGiros = () => async (dispatch) => {
 export const deleteGiro = (id) => async (dispatch) => {
   dispatch(fetchGirosRequest())
   try {
-    const giro = await Axios.delete(`/giros/${id}`)
+    const giro = await Axios.delete(`/api/giros/${id}`)
     dispatch({
       type: DELETE_GIROS_SUCCESS,
       payload: {
@@ -119,7 +120,7 @@ export const deleteGiro = (id) => async (dispatch) => {
       type: FETCH_GIROS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -131,7 +132,7 @@ export const deleteGiro = (id) => async (dispatch) => {
 export const postGiro = (giros) => async (dispatch) => {
   dispatch(fetchGirosRequest())
   try {
-    const giro = await Axios.post(`/giros`, giros)
+    const giro = await Axios.post(`/api/giros`, giros)
     dispatch({
       type: POST_GIROS_SUCCESS,
       payload: {
@@ -146,7 +147,7 @@ export const postGiro = (giros) => async (dispatch) => {
       type: FETCH_GIROS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)
@@ -159,7 +160,7 @@ export const putEstadoGiro = (idGiro, estadoGiro) => async (dispatch) => {
   dispatch(fetchGirosRequest())
   const giro = { estado: estadoGiro }
   try {
-    const giroupdate = await Axios.put(`/giros/status/${idGiro}`, giro)
+    const giroupdate = await Axios.put(`/api/giros/status/${idGiro}`, giro)
     dispatch({
       type: PUT_GIROS_SUCCESS,
       payload: {
@@ -175,7 +176,7 @@ export const putEstadoGiro = (idGiro, estadoGiro) => async (dispatch) => {
       type: FETCH_GIROS_ERROR,
       payload: {
         status: error.status,
-        message: error.message
+        message: error.response.data.message
       }
     })
     clearMessage(dispatch)

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, makeStyles, ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, makeStyles, ListItemSecondaryAction, IconButton, Grid } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCities, deleteCity } from '../../redux/actions/cityActions';
@@ -37,34 +37,41 @@ const City = () => {
       <div style={{ textAlign: "center" }}>
         <h1>List City</h1>
       </div>
-      <List className={classes.root}>
-      
-      <Chargin chargin={cities.isFetching} />
-      {cities.message && <AlertMessage typoAlerta={cities.status} messageAlerta={cities.message} />}
-      {
-        cities.cities.map(city => (
-          <ListItem button key={city.id}>
-            <ListItemAvatar>
-              <Avatar>
-                <LocationOnIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={city.ciudad} secondary={city.idDepartamentos.departamento} />
-            <ListItemSecondaryAction >
-              <IconButton onClick={() => deleteDepart(city.id)} edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-              <IconButton component={RouterLink} to={`/cities-form/${city.id}`}>
-                <EditIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))
-      }
-      <Divider variant="inset" component="li" />
-    </List>
-    </div> 
-    
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="flex-start"
+      >
+        <List className={classes.root}>
+
+          <Chargin chargin={cities.isFetching} />
+          {cities.message && <AlertMessage typoAlerta={cities.status} messageAlerta={cities.message} />}
+          {
+            cities.cities.map(city => (
+              <ListItem button key={city.id}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <LocationOnIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={city.ciudad} secondary={city.idDepartamentos.departamento} />
+                <ListItemSecondaryAction >
+                  <IconButton onClick={() => deleteDepart(city.id)} edge="end" aria-label="delete">
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton component={RouterLink} to={`/cities-form/${city.id}`}>
+                    <EditIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))
+          }
+          <Divider variant="inset" component="li" />
+        </List>
+      </Grid>
+    </div>
+
   )
 }
 

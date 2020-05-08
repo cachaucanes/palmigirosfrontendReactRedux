@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar, Toolbar, IconButton,
   Typography, Button, makeStyles,
-  List, ListItem, ListItemIcon, ListItemText, Collapse, Drawer
+  List, ListItem, ListItemIcon, ListItemText, Collapse, Drawer, Popper, Grow, Paper, ClickAwayListener, MenuList, MenuItem
 } from '@material-ui/core'
 /* ICONS */
 import MenuIcon from '@material-ui/icons/Menu';
@@ -13,8 +13,29 @@ import PublicIcon from '@material-ui/icons/Public';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/actions/userActions';
 
-const Navbar = () => {
+const Navbar = (props) => {
+
+  const userSession = useSelector((state) => state.fetchMantenerDatosUserSession)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (Object.keys(userSession.user).length !== 0) {
+      console.log(Object.keys(userSession.user).length === 0);    
+      if (props.location.pathname !== '/department-list') {
+        props.history.push("/department-list")
+      } 
+    }else{
+      if(props.location.pathname !== '/login'){
+        props.history.push("/login")
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userSession.user])
+
+
   const [palmiGirosNav, setPalmiGirosNav] = useState(
     [
       {
@@ -74,6 +95,11 @@ const Navbar = () => {
     )
   }
 
+  const logoutUser = () => {
+    dispatch(logout())
+    setSessionUser(false)
+  }
+
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -103,13 +129,28 @@ const Navbar = () => {
     ListIcon: {
       minWidth: 'auto',
       marginRight: '5px'
+    },
+    paper: {
+      marginRight: theme.spacing(2),
     }
 
   }));
 
   const classes = useStyles();
 
+  const anchorRef = React.useRef();
   const [left, setLeft] = useState(false)
+  const [sessionUser, setSessionUser] = useState(false)
+
+  const handleToggleSessionUser = () => setSessionUser(!sessionUser)
+  const handleCloseSessionUser = () => setSessionUser(false)
+
+  const handleListKeyDown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setSessionUser(false);
+    }
+  }
 
   const toggleDrawer = () => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -144,7 +185,7 @@ const Navbar = () => {
                     </ListItemIcon>
                     <ListItemText primary={`${subNavLink.title} ${NavPalmi.title}`} />
                   </ListItem>
-                ))}               
+                ))}
               </List>
             </Collapse>
           </List>
@@ -163,7 +204,41 @@ const Navbar = () => {
             Palmigiros
           </RouterLink>
         </Typography>
-        <Button color="inherit" component={RouterLink} to='/login'>Login</Button>
+        {Object.keys(userSession.user).length === 0 &&
+          <Button color="inherit" component={RouterLink} to='/login'>Login</Button>}
+
+        {Object.keys(userSession.user).length !== 0 &&
+          <div>
+            <Button
+              ref={anchorRef}
+              aria-controls={sessionUser ? 'menu-list-grow' : undefined}
+              aria-haspopup="true"
+              onClick={handleToggleSessionUser}
+            >
+              {userSession.user.nombres} {userSession.user.apellidos}
+            </Button>
+            <Popper anchorEl={anchorRef.current} open={sessionUser} role={undefined} transition disablePortal>
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleCloseSessionUser}>
+                      <MenuList autoFocusItem={sessionUser} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                        <MenuItem onClick={handleCloseSessionUser}>Profile</MenuItem>
+                        <MenuItem onClick={handleCloseSessionUser}>My account</MenuItem>
+                        <MenuItem onClick={logoutUser}>Logout</MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
+        }
+
+
       </Toolbar>
       <Drawer open={left} onClose={toggleDrawer(false)}>
         {list()}

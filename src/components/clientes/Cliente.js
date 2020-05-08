@@ -28,18 +28,17 @@ const Cliente = ({ cliente, onDelete, history }) => {
   });
   const classes = useStyles();
 
-  const handleCity = (id) => {
+  const handleCity = (id) => {        
     history.history.push(`/cliente-edit/${id}`)
-
   }
 
   return (
     <Card
-      onClick={() => handleCity(cliente.id)}
+      
       onMouseOut={() => setEfecto(false)}
       onMouseOver={() => setEfecto(true)}
       className={classes.root}>
-      <CardContent>
+      <CardContent onClick={() => handleCity(cliente.id)}>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           CC: {cliente.numeroDocumento}
         </Typography>

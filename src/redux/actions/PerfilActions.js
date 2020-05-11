@@ -182,9 +182,8 @@ export const addPermisosPerfil = (idPerfil, permisos) => async (dispatch) => {
       dispatch(fetchPerfilesRequest())
       if(permisos){
         permisos.map(async permiso => {
-          const permisoadd = await Axios.post(`/api/perfiles/add/`, {idPerfil, idPermiso: permiso.id})
-          console.log(permisoadd);
-          
+          const permisosPerfil = Object.assign({idPerfil, idPermiso: permiso.id})
+          const permisoadd = await Axios.post(`/api/perfiles/add/`, permisosPerfil)          
           dispatch({
             type: POST_PERMISO_FROM_PERFIL_SUCCESS,
             payload: {

@@ -58,9 +58,7 @@ const Login = (props) => {
     const user = Object.assign({ email, password })
     dispatch(login(user))
   }
-  console.log("render login");
-  
-
+    
   return (
     <Grid
       container

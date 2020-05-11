@@ -39,6 +39,7 @@ const fetchPerfiles = (state = initial_state, action) => {
         ...state,
         status: action.payload.status,
         message: action.payload.message,
+        isFetching: false
       }
 
     case DELETE_PERFILES_SUCCESS:

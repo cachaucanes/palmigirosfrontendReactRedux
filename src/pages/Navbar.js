@@ -3,11 +3,12 @@ import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar, Toolbar, IconButton,
   Typography, Button, makeStyles,
-  List, ListItem, ListItemIcon, ListItemText, Collapse, Drawer, Popper, Grow, Paper, ClickAwayListener, MenuList, MenuItem
+  List, ListItem, ListItemIcon, ListItemText, Collapse, Drawer, Popper, Grow, Paper, ClickAwayListener, MenuList, MenuItem, Grid
 } from '@material-ui/core'
 /* ICONS */
 import MenuIcon from '@material-ui/icons/Menu';
 import PublicIcon from '@material-ui/icons/Public';
+import imgGiro from '../img/giro.png'
 
 /* import InboxIcon from '@material-ui/icons/MoveToInbox'; */
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -23,16 +24,16 @@ const Navbar = (props) => {
 
   useEffect(() => {
     if (Object.keys(userSession.user).length !== 0) {
-      console.log(Object.keys(userSession.user).length === 0);    
+      console.log(Object.keys(userSession.user).length === 0);
       if (props.location.pathname !== '/department-list') {
         props.history.push("/department-list")
-      } 
-    }else{
-      if(props.location.pathname !== '/login'){
+      }
+    } else {
+      if (props.location.pathname !== '/login') {
         props.history.push("/login")
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSession.user])
 
 
@@ -101,13 +102,15 @@ const Navbar = (props) => {
   }
 
 
+  const miProfile = () => {
+    props.history.push(`/user-edit/${userSession.user.id}`)
+  }
+
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
     },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
+    
     title: {
       flexGrow: 1,
     },
@@ -201,7 +204,15 @@ const Navbar = (props) => {
         </IconButton>
         <Typography variant="h6" className={classes.title}>
           <RouterLink style={{ color: 'white', textDecoration: 'none' }} to='/'>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="center"
+            >
+              <img style={{width:'4rem'}} src={imgGiro} alt="Logo palmigiros" />
             Palmigiros
+            </Grid>
           </RouterLink>
         </Typography>
         {Object.keys(userSession.user).length === 0 &&
@@ -226,9 +237,8 @@ const Navbar = (props) => {
                   <Paper>
                     <ClickAwayListener onClickAway={handleCloseSessionUser}>
                       <MenuList autoFocusItem={sessionUser} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                        <MenuItem onClick={handleCloseSessionUser}>Profile</MenuItem>
-                        <MenuItem onClick={handleCloseSessionUser}>My account</MenuItem>
-                        <MenuItem onClick={logoutUser}>Logout</MenuItem>
+                        <MenuItem onClick={miProfile}>Mi perfil</MenuItem>
+                        <MenuItem onClick={logoutUser}>Salir</MenuItem>
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>

@@ -146,12 +146,23 @@ export const putProfile = (perfil) => async (dispatch) => {
 }
 
 /* Delete Permisos from perfil */
-export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch) => {  
+export const deletePermisoFromPerfil = (idPerfil, permisos) => async (dispatch) => {  
   try {
-    if (idPermiso) {
-      idPermiso.map(async permiso => {
-        dispatch(fetchPerfilesRequest())
-        /* return console.log("Permisos a eliminar del perfil", idPerfil, permiso.id, permiso.descripcion); */
+    if (permisos.length>0) {
+      dispatch(fetchPerfilesRequest())    
+      const eliminarPermisos = Object.assign({idPerfil, permisos})      
+      const removedPermissions = await Axios.post(`/api/perfiles/delete/permisos`, eliminarPermisos)      
+      dispatch({
+        type: DELETE_PERMISOSFROMPERFIL_SUCCESS,
+        payload: {
+          perfil: removedPermissions.data.perfil,
+          status: removedPermissions.status,
+          message: removedPermissions.data.message
+        }
+      })
+     clearMessage(dispatch)   
+      /* idPermiso.map(async permiso => {
+        dispatch(fetchPerfilesRequest())        
         const permisoPerfil = await Axios.delete(`/api/perfiles/delete/${idPerfil}/${permiso.id}`)                
         dispatch({
           type: DELETE_PERMISOSFROMPERFIL_SUCCESS,
@@ -163,7 +174,7 @@ export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch)
           }
         })
        clearMessage(dispatch)        
-      })
+      }) */
     }
   } catch (error) {
     dispatch({
@@ -180,21 +191,20 @@ export const deletePermisoFromPerfil = (idPerfil, idPermiso) => async (dispatch)
 export const addPermisosPerfil = (idPerfil, permisos) => async (dispatch) => {
     try {
       dispatch(fetchPerfilesRequest())
-      if(permisos){
-        permisos.map(async permiso => {
-          const permisosPerfil = Object.assign({idPerfil, idPermiso: permiso.id})
-          const permisoadd = await Axios.post(`/api/perfiles/add/`, permisosPerfil)          
-          dispatch({
-            type: POST_PERMISO_FROM_PERFIL_SUCCESS,
-            payload: {
-              idPerfil,
-              permiso,
-              status: permisoadd.status,
-              message: permisoadd.data.message
-            }
-          })
-          clearMessage(dispatch)
+      if(permisos.length > 0){        
+        const permisosPerfil = Object.assign({idPerfil, permisos})
+        const permisoadd = await Axios.post(`/api/perfiles/add/`, permisosPerfil)
+        console.log("Retorna servidor", permisoadd.data);
+        
+        dispatch({
+          type: POST_PERMISO_FROM_PERFIL_SUCCESS,
+          payload:{
+            perfil: permisoadd.data.perfil,
+            status: permisoadd.status,
+            message: permisoadd.data.message
+          }
         })
+        clearMessage(dispatch)               
       }
     } catch (error) {
       dispatch({

@@ -15,30 +15,34 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../redux/actions/userActions';
+import { logout } from '../redux/actions/authActions';
 
 const Navbar = (props) => {
 
-  const userSession = useSelector((state) => state.fetchMantenerDatosUserSession)
+  const userSession = useSelector((state) => state.fetchAuth)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (Object.keys(userSession.user).length !== 0) {
-      console.log(Object.keys(userSession.user).length === 0);
-      if (props.location.pathname !== '/department-list') {
-        props.history.push("/department-list")
+    /* if (Object.keys(userSession.user).length !== 0) {
+      console.log(userSession.user);
+      if (props.location.pathname !== '/administration') {
+        props.history.push("/administration")
       }
-    } else {
+    } 
       if (props.location.pathname !== '/login') {
         props.history.push("/login")
-      }
-    }
+      }   */  
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSession.user])
 
 
   const [palmiGirosNav, setPalmiGirosNav] = useState(
     [
+      {
+        title: "Administración", open: false, subtitle: [
+          { title: "Inicio", redire: "/administration" }          
+        ]
+      },
       {
         title: "Departamentos", open: false, subtitle: [
           { title: "Resgistrar", redire: "/department-create" },
@@ -109,8 +113,7 @@ const Navbar = (props) => {
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
-    },
-    
+    },    
     title: {
       flexGrow: 1,
     },
@@ -123,7 +126,6 @@ const Navbar = (props) => {
     MenuNav: {
       background: '#3f51b5',
       color: '#ffffff',
-
       zIndex: -1
     },
     SubMenuNav: {
@@ -159,7 +161,6 @@ const Navbar = (props) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setLeft(!left);
   };
 
@@ -199,9 +200,9 @@ const Navbar = (props) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton onClick={toggleDrawer()} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        {userSession.isLogged && <IconButton onClick={toggleDrawer()} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuIcon />
-        </IconButton>
+        </IconButton>}
         <Typography variant="h6" className={classes.title}>
           <RouterLink style={{ color: 'white', textDecoration: 'none' }} to='/'>
             <Grid
@@ -221,6 +222,7 @@ const Navbar = (props) => {
         {Object.keys(userSession.user).length !== 0 &&
           <div>
             <Button
+            style={{color: 'white'}}
               ref={anchorRef}
               aria-controls={sessionUser ? 'menu-list-grow' : undefined}
               aria-haspopup="true"
@@ -247,9 +249,7 @@ const Navbar = (props) => {
             </Popper>
           </div>
         }
-
-
-      </Toolbar>
+      </Toolbar>      
       <Drawer open={left} onClose={toggleDrawer(false)}>
         {list()}
       </Drawer>

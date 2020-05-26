@@ -248,10 +248,10 @@ const UserCreate = (props) => {
               <Select
                 labelId="perfil"
                 id="perfil"
-                value={idPerfiles || ''}
+                value={idPerfiles || ""}
                 onChange={handleChangePerfil}>
                 {state.fetchPerfiles.perfiles.map(perfil => (
-                  <MenuItem value={perfil.id} key={perfil.id}>{perfil.descripcion}</MenuItem>
+                  <MenuItem value={perfil.id || ""} key={perfil.id}>{perfil.descripcion}</MenuItem>
                 ))}
               </Select>
             </FormControl>

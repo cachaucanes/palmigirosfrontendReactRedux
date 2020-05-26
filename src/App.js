@@ -23,51 +23,53 @@ import UserCreate from './components/users/UserCreate';
 import Login from './components/login/Login';
 import { useDispatch } from 'react-redux';
 import { mantenerDatosUser } from './redux/actions/authActions';
+import Administration from './components/administration/Administration';
+import Auth from './components/auth/Auth';
 
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(mantenerDatosUser())
-  }, [dispatch])
-
-  useEffect(() => {
-    console.log("Entras siempre");
-    
-  })  
+    console.log("dispara App.js");    
+    dispatch(mantenerDatosUser())    
+  }, [dispatch])  
+  
   return (
     <BrowserRouter>
       <Route component={Navbar}/>
       <Switch>      
         <Route path='/' exact component={Home} />
-        <Route path='/cities-list' component={City} />
-        <Route path='/cities-form' exact component={CityForm} />
-        <Route path='/cities-form/:id' component={CityForm} />
 
-        <Route path='/client' component={Cliente} />
-        <Route path='/client-create' exact component={ClientForm} />
-        <Route path='/cliente-edit/:id' component={ClientForm} />
-        <Route path='/client-list' component={ClientesList} />
+        <Auth path='/administration' component={Administration} />
 
-        <Route path='/department-list' exact component={DepartmentsList} /> {/* Se recomienda render para componentes funcionales pero, crea un conflicto con el hook useSelector de redux */}
-        <Route path='/department-create' exact component={DepartmentCreate} />
-        <Route path='/department-edit/:id' component={DepartmentCreate} />
+        <Auth path='/cities-list' component={City} />
+        <Auth path='/cities-form' exact component={CityForm} />
+        <Auth path='/cities-form/:id' component={CityForm} />
 
-        <Route path='/giros-list' component={GirosList} />
-        <Route path='/giros-create' exact component={GiroForm} />
+        <Auth path='/client' component={Cliente} />
+        <Auth path='/client-create' exact component={ClientForm} />
+        <Auth path='/cliente-edit/:id' component={ClientForm} />
+        <Auth path='/client-list' component={ClientesList} />
 
+        <Auth path='/department-list' exact component={DepartmentsList} /> {/* Se recomienda render para componentes funcionales pero, crea un conflicto con el hook useSelector de redux */}
+        <Auth path='/department-create' exact component={DepartmentCreate} />
+        <Auth path='/department-edit/:id' component={DepartmentCreate} />
+
+        <Auth path='/giros-list' component={GirosList} />
+        <Auth path='/giros-create' exact component={GiroForm} />
+        
+        <Auth path='/permisos-list' component={PermisosList} />
+        <Auth path='/permisos-create' exact component={PermisosForm} />
+        <Auth path='/permisos-edit/:id' component={PermisosForm} />
+
+        <Auth path='/perfil-list' component={PerfilList} />
+        <Auth path='/perfil-create' exact component={PerfilForm} />
+        <Auth path='/perfil-edit/:id' component={PerfilForm} />
+
+        <Auth path='/users-list' component={UserList} />
+        <Auth path='/user-create' exact component={UserCreate} />
+        <Auth path='/user-edit/:id' component={UserCreate} />
+        
         <Route path='/login' component={Login} />
-
-        <Route path='/permisos-list' component={PermisosList} />
-        <Route path='/permisos-create' exact component={PermisosForm} />
-        <Route path='/permisos-edit/:id' component={PermisosForm} />
-
-        <Route path='/perfil-list' component={PerfilList} />
-        <Route path='/perfil-create' exact component={PerfilForm} />
-        <Route path='/perfil-edit/:id' component={PerfilForm} />
-
-        <Route path='/users-list' component={UserList} />
-        <Route path='/user-create' exact component={UserCreate} />
-        <Route path='/user-edit/:id' component={UserCreate} />
 
         <Route component={NotFound} /> {/* Se declara al ultimo */}
       </Switch>

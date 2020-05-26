@@ -1,0 +1,24 @@
+.ContainerAdministration {
+  background: #1c92d2;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #f2fcfe, #1c92d2);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #f2fcfe, #1c92d2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.SubContainerAdministration{
+  color: #E0FBFC;
+  text-align: center;
+  padding-top: 4em;
+}
+.TitleAdministration {
+  margin: 0;
+  font-size: 50px;
+  color:#000000d6;
+}
+.DescriptionAdministration{
+  font-size: 30px;
+  color: #453630
+}
+.ContendDescriptionService{
+  overflow: hidden;
+  height: 160px;
+}

@@ -1,25 +1,61 @@
-import { MANTENER_DATOS_USER_SESSION, BORRAR_DATOS_SESSION } from "../actions/authActions";
+import {FETCH_AUTH_LOGIN, FETCH_AUTH_LOGIN_SUCCESS, FETHC_AUTH_LOGIN_ERROR, LOGOUT } from "../actions/authActions";
+import { DELETE_MESSAGE } from "../actions/clearMessageActions";
 
 const initial_state = {
-  user: {}
+  isFetching: false,
+  user: {},
+  isLogged: false,
+  fetch: false,
+  status: '',
+  message: ''
 }
 
 
-const fetchMantenerDatosUserSession = (state = initial_state, action) => {
+const fetchAuth = (state = initial_state, action) => {
   switch (action.type) {
-    case MANTENER_DATOS_USER_SESSION:
+
+    case FETCH_AUTH_LOGIN:
       return {
-        user: action.payload.user
+        ...state,
+        isFetching: true,
+        fetch: false
       }
-    case BORRAR_DATOS_SESSION:
-    return {
-      ...state,
-      user: {}
-    }
+    case FETCH_AUTH_LOGIN_SUCCESS:
+      return {
+        user: action.payload.user,
+        isLogged: true,
+        fetch: true,
+        status: action.payload.status ? action.payload.status: '',
+        message: action.payload.message ? action.payload.message: '',
+        isFetching: false
+      }
+    case FETHC_AUTH_LOGIN_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        status: action.payload.status,
+        message: action.payload.message
+      }   
+
+    case LOGOUT:
+      return {
+        ...state,
+        user: {},
+        isLogged: false,
+        status: action.payload.status,
+        message: action.payload.message,
+        isFetching: false,
+      }
+      case DELETE_MESSAGE:
+      return {
+        ...state,
+        message: '',
+        status: ''
+      }
 
     default:
       return state
   }
 }
 
-export default fetchMantenerDatosUserSession
+export default fetchAuth

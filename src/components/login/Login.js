@@ -8,10 +8,10 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/actions/userActions'
+/* import { login } from '../../redux/actions/userActions' */
 import AlertMessage from '../../pages/AlertMessage';
 import Chargin from '../../pages/Chargin';
-
+import { login } from '../../redux/actions/authActions';
 
 export const SocialIcons = () => (
   <div>
@@ -29,13 +29,13 @@ export const SocialIcons = () => (
 
 const Login = (props) => {
   const dispatch = useDispatch()
-  const stateUser = useSelector((state) => state.fetchUser)
+  const userSession = useSelector((state) => state.fetchAuth)
 
   useEffect(() => {
-    if (stateUser.redirect) {
-      props.history.push("department-list")
+    if (userSession.isLogged) {
+      props.history.push(props.location.state ? props.location.state.isAuthenticated : '/administration')
     }
-  }, [stateUser.redirect, props])
+  }, [userSession.isLogged, props.history, props.location.state])
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -58,7 +58,7 @@ const Login = (props) => {
     const user = Object.assign({ email, password })
     dispatch(login(user))
   }
-    
+
   return (
     <Grid
       container
@@ -67,15 +67,13 @@ const Login = (props) => {
       alignItems="center"
       className='Container BackgroundLogin'
     >
-
-      {stateUser.message && <AlertMessage typoAlerta={stateUser.status} messageAlerta={stateUser.message} />}
+      {userSession.message && <AlertMessage typoAlerta={userSession.status} messageAlerta={userSession.message} />}
       <div className="Container-login">
         <div className="TitleLogin">
           <div>
             <h1>Login</h1>
-            <Chargin chargin={stateUser.isFetching} />
+            <Chargin chargin={userSession.isFetching} />
           </div>
-
           <form onSubmit={postLogin}>
             <FormControl className={classes.margin}>
               <InputLabel htmlFor="correo">Correo</InputLabel>
@@ -112,23 +110,18 @@ const Login = (props) => {
                 </Link>
               </div>
             </FormControl>
-
-
             <div className={classes.margin}>
               <Button type="submit" size="small" className="ButtonLogin BackgroundLogin" variant="contained" color="primary">
                 Login
             </Button>
             </div>
-
             <div className={classes.marginSocial}>
               <p className="Link">Or sign up using</p>
             </div>
-            <SocialIcons/>
+            <SocialIcons />
           </form>
         </div>
       </div>
-
-
     </Grid>
   )
 }
